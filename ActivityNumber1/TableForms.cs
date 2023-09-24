@@ -86,26 +86,6 @@ namespace ActivityNumber1
             {
                 MessageBox.Show("Please Select A Row First", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-
-
-            /*DialogResult choices = MessageBox.Show("Are you sure to reject this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (choices == DialogResult.Yes)
-            {
-                if (userAccountsTable.SelectedRows.Count > 0)
-                {
-                    int selectedIndex = userAccountsTable.SelectedRows[0].Index;
-                    userAccountsTable.Rows.RemoveAt(selectedIndex);
-
-                }
-                else if (userAccountsTable.SelectedRows.Count == 0)
-                {
-                    MessageBox.Show("Please Select A Row First", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else if (choices == DialogResult.No)
-            {
-
-            }*/
         }
     }
 }

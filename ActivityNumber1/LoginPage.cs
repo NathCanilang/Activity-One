@@ -133,7 +133,6 @@ namespace ActivityNumber1
                 }
             }
 
-            // Display "No existing accounts found" message if no matching account is found after checking all rows.
             if (!found)
             {
                 MessageBox.Show($"No existing accounts found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
