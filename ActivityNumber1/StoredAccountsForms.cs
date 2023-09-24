@@ -74,24 +74,6 @@ namespace ActivityNumber1
                     storedAccTable.Rows.RemoveAt(selectedIndex);
                 }
             }
-
-            /*DialogResult choices = MessageBox.Show("Are you sure you want to delete this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (choices == DialogResult.Yes)
-            {
-                if (storedAccTable.SelectedRows.Count > 0)
-                {
-                    int selectedIndex = storedAccTable.SelectedRows[0].Index;
-                    storedAccTable.Rows.RemoveAt(selectedIndex);
-                }
-                else if (storedAccTable.SelectedRows.Count == 0)
-                {
-                    MessageBox.Show("Please Select A Row First", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else if (choices == DialogResult.No)
-            {
-
-            }*/
         }
     }
 }

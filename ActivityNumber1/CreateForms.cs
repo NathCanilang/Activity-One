@@ -121,13 +121,13 @@ namespace ActivityNumber1
                         genderComboBox.SelectedItem = null;
                         return;
                     }
-                    //
+                    
                     if (usernameTextBoxCF.Text.Trim().Equals("Admin", StringComparison.OrdinalIgnoreCase))
                     {
                         MessageBox.Show("The username 'Admin' is not allowed.", "Invalid Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-                    //
+                    
                     usernameExist = false;
                     foreach (DataGridViewRow row in TableForms.TableFormsInstance.userAccountsTable.Rows)
                     {
