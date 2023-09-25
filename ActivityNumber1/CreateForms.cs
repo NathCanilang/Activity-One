@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ActivityNumber1
@@ -17,9 +20,12 @@ namespace ActivityNumber1
         public static CreateForms CreateFormsInstance;
         bool usernameExist = false;
         private string[] genders = { "Male", "Female"};
+
+        private MySqlConnection conn;
         public CreateForms()
         {
             InitializeComponent();
+            
             CreateFormsInstance = this;
 
             genderComboBox.Items.AddRange(genders);
@@ -32,6 +38,11 @@ namespace ActivityNumber1
             passwordLbl.Parent = createFormsBackPic;
             emailLbl.Parent = createFormsBackPic;
             showPasswordCF.Parent = createFormsBackPic;
+
+             
+        string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
         }
 
         private void CreateForms_Load(object sender, EventArgs e)
@@ -101,6 +112,9 @@ namespace ActivityNumber1
 
         private void createBtnCF_Click(object sender, EventArgs e)
         {
+            string fixedSalt = "xCv12dFqwS";
+            string randomSalt = generateSalt();
+
             if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
                 || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
             {
@@ -111,49 +125,45 @@ namespace ActivityNumber1
 
             else
             {
-                DialogResult choices = MessageBox.Show("Are you sure to the information that you have entered?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (choices == DialogResult.Yes)
-                {
-                    if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
-                || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
-                    {
-                        MessageBox.Show("Please fill out all the required data", "Missing Informations", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        genderComboBox.SelectedItem = null;
-                        return;
-                    }
-                    
-                    if (usernameTextBoxCF.Text.Trim().Equals("Admin", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MessageBox.Show("The username 'Admin' is not allowed.", "Invalid Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    
-                    usernameExist = false;
-                    foreach (DataGridViewRow row in TableForms.TableFormsInstance.userAccountsTable.Rows)
-                    {
-                        string rowUsername = row.Cells["usernameColumn"].Value?.ToString();
-                        if (rowUsername == usernameTextBoxCF.Text)
-                        {
-                            usernameExist = true;
-                            MessageBox.Show("Username Already Exists", "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            usernameTextBoxCF.Clear();
-                            break;
-                        }
-                    }
-                    if (!usernameExist)
-                    {
-                        string gmailAttatch = emailTextBoxCF.Text + "@gmail.com";
-                        TableForms.TableFormsInstance.addAccount(nameTextBoxCF.Text, ageTextBoxCF.Text, genderComboBox.SelectedItem.ToString(), usernameTextBoxCF.Text, passwordTextBoxCF.Text, gmailAttatch);
-                        MessageBox.Show("Account Created, Wait for the admin to approve your account.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
+                    "values('"+this.nameTextBoxCF.Text+"', '"+this.ageTextBoxCF.Text+"', '"+this.genderComboBox.SelectedItem.ToString()+"', '"+this.usernameTextBoxCF.Text+"', '"+this.emailTextBoxCF.Text+"', '"+this.hashPassword(passwordTextBoxCF.Text)+"', " +
+                    "'" + this.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt)+"', '"+randomSalt+"','" + this.randonSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
+               
+                MySqlCommand cmdDataBase = new MySqlCommand(insertQuery, conn);
+                MySqlDataReader myReader;
 
-                        nameTextBoxCF.Clear();
-                        ageTextBoxCF.Clear();
-                        usernameTextBoxCF.Clear();
-                        passwordTextBoxCF.Clear();
-                        emailTextBoxCF.Clear();
-                        genderComboBox.SelectedItem = null;
+                try
+                {
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    MessageBox.Show("Account created");
+
+                } 
+
+                catch(MySqlException a)
+                {
+                    if (a.Number == 1062)
+                    {
+                        MessageBox.Show("Username already exist.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("An error occured", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+
+                catch(Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                } 
+
+                finally 
+                { 
+                    conn.Close(); 
+                }
+
+                    
             }
         }
 
@@ -168,6 +178,38 @@ namespace ActivityNumber1
                 passwordTextBoxCF.PasswordChar = '*';
             }
             
+        }
+        string hashPassword(string password)
+        {
+            var sha = SHA256.Create();
+            var asBytesArray = Encoding.Default.GetBytes(password);
+            var hashedPassword = sha.ComputeHash(asBytesArray);
+            return Convert.ToBase64String(hashedPassword);
+        }
+
+        string fixedSaltPassword(string password, string salt)
+        {
+            var sha = SHA256.Create();
+            var asBytesArray = Encoding.Default.GetBytes(password + salt);
+            var hashedPassword = sha.ComputeHash(asBytesArray);
+            return Convert.ToBase64String(hashedPassword);
+        }
+
+        string randonSaltPassword(string password, string randomSalt)
+        {
+            var sha = SHA256.Create();
+            var asBytesArray = Encoding.Default.GetBytes(password + randomSalt);
+            var hashedPassword = sha.ComputeHash(asBytesArray);
+            return Convert.ToBase64String(hashedPassword);
+        }
+        public static string generateSalt()
+        {
+            byte[] saltBytes = new byte[8];
+            using (var rngCsp = new RNGCryptoServiceProvider())
+            {
+                rngCsp.GetBytes(saltBytes);
+            }
+            return Convert.ToBase64String(saltBytes);
         }
     }
 }

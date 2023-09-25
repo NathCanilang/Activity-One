@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,12 +15,24 @@ namespace ActivityNumber1
     public partial class TableForms : Form
     {
         public static TableForms TableFormsInstance;
-        StoredAccountsForms storedAccountsForms = new StoredAccountsForms();      
+        StoredAccountsForms storedAccountsForms = new StoredAccountsForms();
+        private MySqlConnection conn;
+        
 
         public TableForms()
         {
             InitializeComponent();
             TableFormsInstance = this;
+
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+            dataGridView1.DataSource = dataTable;
         }
 
         private void TableForms_Load(object sender, EventArgs e)
@@ -31,37 +44,14 @@ namespace ActivityNumber1
         {
             this.Hide();
         }
-        public void addAccount(string name, string age, string gender, string username, string password, string email)
+        public void addAccount()
         {
-               userAccountsTable.Rows.Add(name, age, gender, username, password, email);
+              
         }
 
         private void approvalBtn_Click(object sender, EventArgs e)
         {
-            int rowsSelected = userAccountsTable.SelectedRows.Count;
-
-            if (rowsSelected > 0)
-            {
-                foreach (DataGridViewRow selectedRow in userAccountsTable.SelectedRows)
-                {
-     
-                    string name = selectedRow.Cells["nameColumn"].Value.ToString();
-                    string age = selectedRow.Cells["ageColumn"].Value.ToString();
-                    string gender = selectedRow.Cells["genderColumn"].Value.ToString();
-                    string username = selectedRow.Cells["usernameColumn"].Value.ToString();
-                    string password = selectedRow.Cells["passwordColumn"].Value.ToString();
-                    string email = selectedRow.Cells["emailColumn"].Value.ToString();
-                  
-                    storedAccountsForms.addAccount(name, age, gender, username, password, email);
-                    
-                    MessageBox.Show("Account Approved", "Approval", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    userAccountsTable.Rows.Remove(selectedRow);
-                }
-            }
-            else if (rowsSelected == 0)
-            {
-                MessageBox.Show("Select a row first", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            
         }
 
         private void storedAccBtn_Click(object sender, EventArgs e)
@@ -73,19 +63,7 @@ namespace ActivityNumber1
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            if (userAccountsTable.SelectedRows.Count > 0)
-            {
-                DialogResult choices = MessageBox.Show("Are you sure to reject this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (choices == DialogResult.Yes)
-                {
-                    int selectedIndex = userAccountsTable.SelectedRows[0].Index;
-                    userAccountsTable.Rows.RemoveAt(selectedIndex);
-                }
-            }
-            else if (userAccountsTable.SelectedRows.Count == 0)
-            {
-                MessageBox.Show("Please Select A Row First", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            
         }
     }
 }
