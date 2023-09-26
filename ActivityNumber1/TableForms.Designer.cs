@@ -35,6 +35,7 @@
             this.storedAccBtn = new System.Windows.Forms.Button();
             this.tableFormsBackground = new System.Windows.Forms.PictureBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.refreshBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tableFormsBackground)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -81,7 +82,6 @@
             this.storedAccBtn.TabIndex = 5;
             this.storedAccBtn.Text = "Stored Accounts";
             this.storedAccBtn.UseVisualStyleBackColor = true;
-            this.storedAccBtn.Click += new System.EventHandler(this.storedAccBtn_Click);
             // 
             // tableFormsBackground
             // 
@@ -106,11 +106,22 @@
             this.dataGridView1.Size = new System.Drawing.Size(723, 370);
             this.dataGridView1.TabIndex = 7;
             // 
+            // refreshBtn
+            // 
+            this.refreshBtn.Location = new System.Drawing.Point(781, 435);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(75, 23);
+            this.refreshBtn.TabIndex = 8;
+            this.refreshBtn.Text = "Refresh";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
+            // 
             // TableForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1003, 463);
+            this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.storedAccBtn);
             this.Controls.Add(this.backBtn);
@@ -137,5 +148,6 @@
         private System.Windows.Forms.Button storedAccBtn;
         private System.Windows.Forms.PictureBox tableFormsBackground;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button refreshBtn;
     }
 }

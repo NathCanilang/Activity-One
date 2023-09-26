@@ -124,12 +124,6 @@
     <Compile Include="RecoveryForms.Designer.cs">
       <DependentUpon>RecoveryForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="StoredAccountsForms.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="StoredAccountsForms.Designer.cs">
-      <DependentUpon>StoredAccountsForms.cs</DependentUpon>
-    </Compile>
     <Compile Include="TableForms.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -160,9 +154,6 @@
     </Compile>
     <EmbeddedResource Include="RecoveryForms.resx">
       <DependentUpon>RecoveryForms.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="StoredAccountsForms.resx">
-      <DependentUpon>StoredAccountsForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableForms.resx">
       <DependentUpon>TableForms.cs</DependentUpon>
