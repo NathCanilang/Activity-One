@@ -18,8 +18,7 @@ namespace ActivityNumber1
     public partial class CreateForms : Form
     {
         public static CreateForms CreateFormsInstance;
-        bool usernameExist = false;
-        private string[] genders = { "Male", "Female"};
+        private string[] genders = {"Male", "Female"};
 
         private MySqlConnection conn;
         public CreateForms()
@@ -28,6 +27,8 @@ namespace ActivityNumber1
             
             CreateFormsInstance = this;
 
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
             genderComboBox.Items.AddRange(genders);
             genderComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -39,9 +40,6 @@ namespace ActivityNumber1
             emailLbl.Parent = createFormsBackPic;
             showPasswordCF.Parent = createFormsBackPic;
 
-             
-        string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
-            conn = new MySqlConnection(mysqlcon);
 
         }
 
@@ -109,11 +107,13 @@ namespace ActivityNumber1
                 genderComboBox.Text = genderComboBox.SelectedItem.ToString();
             }
         }
-
+ 
         private void createBtnCF_Click(object sender, EventArgs e)
         {
+            string adminUsername = "Admin";
             string fixedSalt = "xCv12dFqwS";
-            string randomSalt = generateSalt();
+            string randomSalt = PasswordEncrypter.generateSalt();
+
 
             if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
                 || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
@@ -123,29 +123,38 @@ namespace ActivityNumber1
                 return;
             }
 
+            if (usernameTextBoxCF.Text == adminUsername)
+            {
+                MessageBox.Show("The entered username is not allowed", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
             else
             {
                 string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
-                    "values('"+this.nameTextBoxCF.Text+"', '"+this.ageTextBoxCF.Text+"', '"+this.genderComboBox.SelectedItem.ToString()+"', '"+this.usernameTextBoxCF.Text+"', '"+this.emailTextBoxCF.Text+"', '"+this.hashPassword(passwordTextBoxCF.Text)+"', " +
-                    "'" + this.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt)+"', '"+randomSalt+"','" + this.randonSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
-               
+                    "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
+                    "'" + PasswordEncrypter.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt) + "', '" + randomSalt + "','" + PasswordEncrypter.randomSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
                 MySqlCommand cmdDataBase = new MySqlCommand(insertQuery, conn);
-                MySqlDataReader myReader;
 
                 try
                 {
                     conn.Open();
                     cmdDataBase.ExecuteNonQuery();
-                    MessageBox.Show("Account created");
+                    MessageBox.Show("Account Created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                } 
+                    nameTextBoxCF.Clear();
+                    ageTextBoxCF.Clear();
+                    usernameTextBoxCF.Clear();
+                    passwordTextBoxCF.Clear();
+                    emailTextBoxCF.Clear();
+                    genderComboBox.SelectedItem = null;
+                }
 
-                catch(MySqlException a)
+                catch (MySqlException a)
                 {
                     if (a.Number == 1062)
                     {
                         MessageBox.Show("Username already exist.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                     }
                     else
                     {
@@ -153,17 +162,15 @@ namespace ActivityNumber1
                     }
                 }
 
-                catch(Exception b)
+                catch (Exception b)
                 {
                     MessageBox.Show(b.Message);
-                } 
-
-                finally 
-                { 
-                    conn.Close(); 
                 }
 
-                    
+                finally
+                {
+                    conn.Close();
+                }     
             }
         }
 
@@ -176,40 +183,7 @@ namespace ActivityNumber1
             else
             {
                 passwordTextBoxCF.PasswordChar = '*';
-            }
-            
-        }
-        string hashPassword(string password)
-        {
-            var sha = SHA256.Create();
-            var asBytesArray = Encoding.Default.GetBytes(password);
-            var hashedPassword = sha.ComputeHash(asBytesArray);
-            return Convert.ToBase64String(hashedPassword);
-        }
-
-        string fixedSaltPassword(string password, string salt)
-        {
-            var sha = SHA256.Create();
-            var asBytesArray = Encoding.Default.GetBytes(password + salt);
-            var hashedPassword = sha.ComputeHash(asBytesArray);
-            return Convert.ToBase64String(hashedPassword);
-        }
-
-        string randonSaltPassword(string password, string randomSalt)
-        {
-            var sha = SHA256.Create();
-            var asBytesArray = Encoding.Default.GetBytes(password + randomSalt);
-            var hashedPassword = sha.ComputeHash(asBytesArray);
-            return Convert.ToBase64String(hashedPassword);
-        }
-        public static string generateSalt()
-        {
-            byte[] saltBytes = new byte[8];
-            using (var rngCsp = new RNGCryptoServiceProvider())
-            {
-                rngCsp.GetBytes(saltBytes);
-            }
-            return Convert.ToBase64String(saltBytes);
+            } 
         }
     }
 }

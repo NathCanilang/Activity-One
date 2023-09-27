@@ -32,9 +32,9 @@
             this.approvalBtn = new System.Windows.Forms.Button();
             this.removeBtn = new System.Windows.Forms.Button();
             this.backBtn = new System.Windows.Forms.Button();
-            this.storedAccBtn = new System.Windows.Forms.Button();
             this.tableFormsBackground = new System.Windows.Forms.PictureBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.refreshBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tableFormsBackground)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -72,17 +72,6 @@
             this.backBtn.UseVisualStyleBackColor = true;
             this.backBtn.Click += new System.EventHandler(this.backBtn_Click);
             // 
-            // storedAccBtn
-            // 
-            this.storedAccBtn.Font = new System.Drawing.Font("Simple Handmade", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.storedAccBtn.Location = new System.Drawing.Point(796, 265);
-            this.storedAccBtn.Name = "storedAccBtn";
-            this.storedAccBtn.Size = new System.Drawing.Size(148, 48);
-            this.storedAccBtn.TabIndex = 5;
-            this.storedAccBtn.Text = "Stored Accounts";
-            this.storedAccBtn.UseVisualStyleBackColor = true;
-            this.storedAccBtn.Click += new System.EventHandler(this.storedAccBtn_Click);
-            // 
             // tableFormsBackground
             // 
             this.tableFormsBackground.Image = global::ActivityNumber1.Properties.Resources.TUBA_OuterSpace;
@@ -106,13 +95,23 @@
             this.dataGridView1.Size = new System.Drawing.Size(723, 370);
             this.dataGridView1.TabIndex = 7;
             // 
+            // refreshBtn
+            // 
+            this.refreshBtn.Location = new System.Drawing.Point(796, 259);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(148, 48);
+            this.refreshBtn.TabIndex = 8;
+            this.refreshBtn.Text = "Refresh";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
+            // 
             // TableForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1003, 463);
+            this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.storedAccBtn);
             this.Controls.Add(this.backBtn);
             this.Controls.Add(this.removeBtn);
             this.Controls.Add(this.approvalBtn);
@@ -134,8 +133,8 @@
         private System.Windows.Forms.Button approvalBtn;
         private System.Windows.Forms.Button removeBtn;
         private System.Windows.Forms.Button backBtn;
-        private System.Windows.Forms.Button storedAccBtn;
         private System.Windows.Forms.PictureBox tableFormsBackground;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button refreshBtn;
     }
 }
