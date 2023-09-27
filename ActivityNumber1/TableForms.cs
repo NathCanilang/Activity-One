@@ -52,17 +52,11 @@ namespace ActivityNumber1
 
         private void approvalBtn_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.SelectedRows.Count > 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                string query = "SELECT * FROM mbuserinfo";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                DataTable dataTable = new DataTable();
-                
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
                 string accountUsername = selectedRow.Cells["Username"].Value.ToString();
                 string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
-                adapter.Fill(dataTable);
                 MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
 
                 try
@@ -70,6 +64,7 @@ namespace ActivityNumber1
                     conn.Open();
                     cmdDataBase.ExecuteNonQuery();
                     MessageBox.Show("Account updated");
+                    selectedRow.Cells["Status"].Value = "ACTIVATED";
                 }
 
                 catch (Exception b)
