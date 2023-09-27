@@ -33,12 +33,14 @@ namespace ActivityNumber1
             MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
+
             dataGridView1.DataSource = dataTable;
         }
 
         private void TableForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+            refreshTable();
         }
 
         private void backBtn_Click(object sender, EventArgs e)
@@ -54,6 +56,12 @@ namespace ActivityNumber1
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
+                string query = "SELECT * FROM mbuserinfo";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
                 DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
                 string accountUsername = selectedRow.Cells["Username"].Value.ToString();
                 string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
@@ -63,8 +71,10 @@ namespace ActivityNumber1
                 {
                     conn.Open();
                     cmdDataBase.ExecuteNonQuery();
-                    MessageBox.Show("Account updated");
+                    adapter.Fill(dataTable);
+                    dataGridView1.DataSource = dataTable;
                     selectedRow.Cells["Status"].Value = "ACTIVATED";
+                    MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 catch (Exception b)
@@ -87,11 +97,31 @@ namespace ActivityNumber1
 
         private void refreshBtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM mbuserinfo";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
+            refreshTable();
+        }
+
+        private void refreshTable()
+        {
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
+            using (conn = new MySqlConnection(mysqlcon))
+            {
+                string selectQuery = "SELECT * FROM mbuserinfo";
+                MySqlDataAdapter adapter = new MySqlDataAdapter(selectQuery, conn);
+                DataTable dataTable = new DataTable();
+
+                try
+                {
+                    conn.Open();
+                    adapter.Fill(dataTable);
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message);
+                }
+            }
         }
     }
 }

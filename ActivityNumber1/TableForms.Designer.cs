@@ -134,7 +134,7 @@
         private System.Windows.Forms.Button removeBtn;
         private System.Windows.Forms.Button backBtn;
         private System.Windows.Forms.PictureBox tableFormsBackground;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button refreshBtn;
     }
 }

@@ -31,8 +31,6 @@ namespace ActivityNumber1
         {
             string enteredUsername = usernameTextBoxRF.Text;
             string enteredEmail = emailTextBoxRF.Text;
-            
-           // StoredAccountsForms.storedAccountsInstance.CheckCredentials(enteredUsername, enteredEmail);
 
             usernameTextBoxRF.Clear();
             emailTextBoxRF.Clear();

@@ -140,8 +140,14 @@ namespace ActivityNumber1
                 {
                     conn.Open();
                     cmdDataBase.ExecuteNonQuery();
-                    MessageBox.Show("Account created");
+                    MessageBox.Show("Account Created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                    nameTextBoxCF.Clear();
+                    ageTextBoxCF.Clear();
+                    usernameTextBoxCF.Clear();
+                    passwordTextBoxCF.Clear();
+                    emailTextBoxCF.Clear();
+                    genderComboBox.SelectedItem = null;
                 }
 
                 catch (MySqlException a)

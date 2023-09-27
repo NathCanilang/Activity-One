@@ -66,6 +66,12 @@ namespace ActivityNumber1
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
             string usernameInput = usernameComboBox.Text;
             string passwordInput = PasswordEncrypter.hashPassword(passwordTextBox.Text);
             bool accountActive = false;
@@ -88,8 +94,7 @@ namespace ActivityNumber1
                 this.WindowState = FormWindowState.Normal;
                 rememberAccount();
 
-                passwordTextBox.Clear();
-                usernameComboBox.ResetText();
+                textboxCleaner();
                 rememberCheckBox.CheckState = CheckState.Unchecked;
 
                 return;
@@ -119,24 +124,35 @@ namespace ActivityNumber1
 
                         if (!accountActive)
                         {
-                            MessageBox.Show("Wait for the admin to approve your account");
+                            MessageBox.Show("Wait for the admin to approve your account!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            rememberAccount();
                         }
                         else
                         {
                             if (passwordInput != databasePassword)
                             {
-                                MessageBox.Show("Wrong Password");
+                                MessageBox.Show($"Invalid Password", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                             else
                             {
-                                MessageBox.Show("Account Logged");
-                                //dito na lalabas yung welcome forms
+                                MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                rememberAccount();
+                                this.WindowState = FormWindowState.Minimized;
+                                welcomeForms.ShowDialog();
+                                this.WindowState = FormWindowState.Normal;
+                                loginAttempts = 0;
+
+                                currentAttempts = 3;
+
+                                textboxCleaner();
                             }
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Invalid Username");
+                        MessageBox.Show($"Invalid Username", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        errorAttempts();
+                        textboxCleaner();
                     }
                 }
 
@@ -153,10 +169,13 @@ namespace ActivityNumber1
         }
         public void errorAttempts()
         {
-            currentAttempts--;
-            MessageBox.Show($"{currentAttempts} {(currentAttempts > 1 ? "attempts" : "attempts")} remaining", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (currentAttempts > 0)
+            {
+                currentAttempts--;
+                MessageBox.Show($"{currentAttempts} {(currentAttempts > 1 ? "attempts" : "attempts")} remaining", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             loginAttempts++;
-            
 
             if (loginAttempts == 3)
             {
@@ -164,7 +183,7 @@ namespace ActivityNumber1
                 startTimer();
             }
 
-            else if (currentAttempts <= 0)
+            if (currentAttempts <= 0)
             {
                 currentAttempts = 3;
             }
@@ -219,5 +238,11 @@ namespace ActivityNumber1
 
         }
 
+        private void textboxCleaner()
+        {
+            passwordTextBox.Clear();
+            usernameComboBox.ResetText();
+            rememberCheckBox.CheckState = CheckState.Unchecked;
+        }
     }
 }
