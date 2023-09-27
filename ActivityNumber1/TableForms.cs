@@ -71,8 +71,6 @@ namespace ActivityNumber1
                 {
                     conn.Open();
                     cmdDataBase.ExecuteNonQuery();
-                    adapter.Fill(dataTable);
-                    dataGridView1.DataSource = dataTable;
                     selectedRow.Cells["Status"].Value = "ACTIVATED";
                     MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -92,7 +90,35 @@ namespace ActivityNumber1
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+            string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
+            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+
+            try
+            {
+                conn.Open();
+                cmdDataBase.ExecuteNonQuery();
+                refreshTable();
+                MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            catch (Exception b)
+            {
+                MessageBox.Show(b.Message);
+            }
+
+            finally
+            {
+                conn.Close();
+            }
+
         }
 
         private void refreshBtn_Click(object sender, EventArgs e)

@@ -107,9 +107,6 @@
     <Compile Include="CreateForms.Designer.cs">
       <DependentUpon>CreateForms.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="LoginPage.cs">
       <SubType>Form</SubType>
     </Compile>
