@@ -110,6 +110,8 @@ namespace ActivityNumber1
 
                                 if (hashedEnteredPassword == hashedPasswordFromDatabase)
                                 {
+                                    loginAttempts = 0;
+                                    currentAttempts = 3;
                                     MessageBox.Show("Login Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                     this.WindowState = FormWindowState.Minimized;
                                     welcomeForms.ShowDialog();
@@ -133,7 +135,7 @@ namespace ActivityNumber1
                             }
                             else if (accountStatus == "INACTIVE")
                             {
-                                MessageBox.Show("Account is not activated", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show("Invalid credentials", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 passwordTextBox.Clear();
                                 usernameComboBox.ResetText();
                                 errorAttempts();
