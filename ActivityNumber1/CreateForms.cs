@@ -112,6 +112,7 @@ namespace ActivityNumber1
             string adminUsername = "Admin";
             string fixedSalt = "xCv12dFqwS";
             string randomSalt = PasswordEncrypter.generateSalt();
+            string addEmail = "@gmail.com";
 
 
             if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
@@ -132,7 +133,7 @@ namespace ActivityNumber1
             if(choices == DialogResult.Yes)
             {
                 string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
-                    "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
+                    "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + addEmail+ "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
                     "'" + PasswordEncrypter.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt) + "', '" + randomSalt + "','" + PasswordEncrypter.randomSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
                 MySqlCommand cmdDataBase = new MySqlCommand(insertQuery, conn);
 
