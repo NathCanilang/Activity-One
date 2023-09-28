@@ -47,11 +47,7 @@ namespace ActivityNumber1
         {
             this.Hide();
         }
-        public void addAccount()
-        {
-              
-        }
-
+        
         private void approvalBtn_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
@@ -84,7 +80,6 @@ namespace ActivityNumber1
                 {
                     conn.Close();
                 }
-
             }
         }
 

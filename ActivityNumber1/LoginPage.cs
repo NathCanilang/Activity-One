@@ -66,12 +66,6 @@ namespace ActivityNumber1
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM mbuserinfo";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
             string usernameInput = usernameComboBox.Text;
             string passwordInput = PasswordEncrypter.hashPassword(passwordTextBox.Text);
             bool accountActive = false;
@@ -232,10 +226,6 @@ namespace ActivityNumber1
                 usernameComboBox.SelectedIndex = usernameComboBox.Items.IndexOf(newItem);
                 usernameComboBox.Text = "";
             }
-        }
-        private void accountChecker()
-        {
-
         }
 
         private void textboxCleaner()
