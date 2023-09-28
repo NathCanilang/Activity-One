@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace ActivityNumber1
 {
@@ -27,7 +19,7 @@ namespace ActivityNumber1
 
         public int loginAttempts = 0;
         public int currentAttempts = 3;
-        //Hi Nath ;)
+        
         private string adminUsername = "Admin";
         private string adminPassword = "admin123";
 
@@ -44,113 +36,139 @@ namespace ActivityNumber1
 
         }
 
-        private void createAccountLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private static readonly Random random = new Random();
+        public static string GenerateRandomString(int length)
         {
-            this.WindowState = FormWindowState.Minimized;
-            createforms.ShowDialog();
-            this.WindowState = FormWindowState.Normal;
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private void forgotPasswordLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        public static string HashPassword(string password, string salt = null)
         {
-            this.WindowState = FormWindowState.Minimized;
-            recoveryForms.ShowDialog();
-            this.WindowState = FormWindowState.Normal;
+            using (SHA256 sha = SHA256.Create())
+            {
+                byte[] saltBytes = Encoding.Default.GetBytes(salt ?? "");
+                byte[] passwordBytes = Encoding.Default.GetBytes(password + Encoding.Default.GetString(saltBytes));
+                byte[] hashedPasswordBytes = sha.ComputeHash(passwordBytes);
+                return Convert.ToBase64String(hashedPasswordBytes);
+            }
         }
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-
             string enteredUsername = usernameComboBox.Text;
             string enteredPassword = passwordTextBox.Text;
-            bool found = false;
 
-            if (enteredUsername == adminUsername && enteredPassword == adminPassword)
+            if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
+            {
+                MessageBox.Show("Please fill in all required fields.", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                rememberCheckBox.CheckState = CheckState.Unchecked;
+                errorAttempts();
+                return;
+            }
+            else if (enteredUsername == adminUsername && enteredPassword == adminPassword)
             {
                 loginAttempts = 0;
-
                 currentAttempts = 3;
-
                 MessageBox.Show("Hi Admin, Welcome!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.WindowState = FormWindowState.Minimized;
                 tableforms.ShowDialog();
                 this.WindowState = FormWindowState.Normal;
                 rememberAccount();
-
                 passwordTextBox.Clear();
                 usernameComboBox.ResetText();
                 rememberCheckBox.CheckState = CheckState.Unchecked;
-
-                return;
-            }
-            else if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
-            {
-                MessageBox.Show("Please fill in all required fields.", " Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                rememberCheckBox.CheckState = CheckState.Unchecked;
-                errorAttempts();
                 return;
             }
             else
             {
-                foreach (DataGridViewRow selectedRow in StoredAccountsForms.storedAccountsInstance.storedAccTable.Rows)
+                // Establish a MySQL connection
+                string connectionString = "server=localhost;user=root;database=tubshashsalt;password=";
+
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
                 {
-                    string username = selectedRow.Cells["usernameCol"].Value?.ToString();
-                    string password = selectedRow.Cells["passwordCol"].Value?.ToString();
-
-                    if (enteredUsername == username && enteredPassword == password)
+                    try
                     {
-                        MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        rememberAccount();
-                        this.WindowState = FormWindowState.Minimized;
-                        welcomeForms.ShowDialog();
-                        this.WindowState = FormWindowState.Normal;
-                        loginAttempts = 0;
+                        connection.Open();
 
-                        currentAttempts = 3;
+                        // Query the database to retrieve the hashed password and account status for the entered username
+                        string getPasswordQuery = "SELECT HashedPassword, Status FROM mbuserinfo WHERE Username = @Username";
+                        MySqlCommand getPasswordCommand = new MySqlCommand(getPasswordQuery, connection);
+                        getPasswordCommand.Parameters.AddWithValue("@Username", enteredUsername);
+                        MySqlDataReader reader = getPasswordCommand.ExecuteReader();
 
-                        rememberCheckBox.CheckState = CheckState.Unchecked;
-                        found = true;
+                        if (reader.Read())
+                        {
+                            string hashedPasswordFromDatabase = reader["HashedPassword"].ToString();
+                            string accountStatus = reader["Status"].ToString();
 
-                        passwordTextBox.Clear();
-                        usernameComboBox.ResetText();
+                            if (accountStatus == "ACTIVE")
+                            {
+                                // Hash the entered password using the same salt (if applicable) and compare it to the database value
+                                string hashedEnteredPassword = HashPassword(enteredPassword);
 
-                        return;
+                                if (hashedEnteredPassword == hashedPasswordFromDatabase)
+                                {
+                                    MessageBox.Show("Login Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    this.WindowState = FormWindowState.Minimized;
+                                    welcomeForms.ShowDialog();
+                                    this.WindowState = FormWindowState.Normal;
+                                    rememberAccount();
+
+                                    // Clear input fields
+                                    passwordTextBox.Clear();
+                                    usernameComboBox.ResetText();
+                                    rememberCheckBox.CheckState = CheckState.Unchecked;
+
+                                    return;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Incorrect password.", "TRY AGAIN", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                                    passwordTextBox.Clear();
+                                    usernameComboBox.ResetText();
+                                    errorAttempts();
+                                }
+                            }
+                            else if (accountStatus == "INACTIVE")
+                            {
+                                MessageBox.Show("Account is not activated", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                passwordTextBox.Clear();
+                                usernameComboBox.ResetText();
+                                errorAttempts();
+                            }
+                            
+                        }
+                        else
+                        {
+                            MessageBox.Show("Incorrect username.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            passwordTextBox.Clear();
+                            usernameComboBox.ResetText();
+                            errorAttempts();
+                        }
+
+                        reader.Close();
                     }
-                    else if (enteredUsername != username && enteredPassword == password)
+                    catch (Exception ex)
                     {
-                        MessageBox.Show($"Invalid Username", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        errorAttempts();
-                        rememberCheckBox.CheckState = CheckState.Unchecked;
-                        return;
+                        MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                    else if (enteredUsername == username && enteredPassword != password)
+                    finally
                     {
-                        MessageBox.Show($"Invalid Password", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        errorAttempts();
-                        rememberCheckBox.CheckState = CheckState.Unchecked;
-                        return;
+                        connection.Close();
                     }
                 }
             }
-
-            // Display "No existing accounts found" message if no matching account is found after checking all rows.
-            if (!found)
-            {
-                MessageBox.Show($"No existing accounts found", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                errorAttempts();
-                rememberCheckBox.CheckState = CheckState.Unchecked;
-                passwordTextBox.Clear();
-                usernameComboBox.ResetText();
-            }
-            passwordTextBox.Clear();
-            usernameComboBox.ResetText();
         }
+
+
+
         public void errorAttempts()
         {
             currentAttempts--;
             MessageBox.Show($"{currentAttempts} {(currentAttempts > 1 ? "attempts" : "attempts")} remaining", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            loginAttempts++;
-            
+            loginAttempts++;          
 
             if (loginAttempts == 3)
             {
@@ -207,6 +225,19 @@ namespace ActivityNumber1
                 usernameComboBox.SelectedIndex = usernameComboBox.Items.IndexOf(newItem);
                 usernameComboBox.Text = "";
             }
+        }
+        private void createAccountLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+            createforms.ShowDialog();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void forgotPasswordLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+            recoveryForms.ShowDialog();
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }
