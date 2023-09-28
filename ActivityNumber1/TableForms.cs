@@ -1,171 +1,158 @@
-﻿using System;
+
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+
 
 namespace ActivityNumber1
 {
     public partial class TableForms : Form
     {
-        public static TableForms TableFormsInstance;     
+        public static TableForms TableFormsInstance;
+        private MySqlConnection conn;
+        
+
 
         public TableForms()
         {
             InitializeComponent();
             TableFormsInstance = this;
 
-            // Define columns for the DataGridView.
-            userAccountsTable.Columns.Add("FullName", "Full Name");
-            userAccountsTable.Columns.Add("Age", "Age");
-            userAccountsTable.Columns.Add("Gender", "Gender");
-            userAccountsTable.Columns.Add("Username", "Username");
-            userAccountsTable.Columns.Add("Email", "Email");
-            userAccountsTable.Columns.Add("Status", "Status");
-            // Call a method to load data from the database and populate the DataGridView.
-            LoadUserData();
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
 
-            // Subscribe to the UserAccountCreated event.
-            CreateForms.UserAccountCreated += HandleUserAccountCreated;
-            userAccountsTable.KeyDown += Escape_KeyDown;
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            dataGridView1.DataSource = dataTable;
+
         }
 
         private void TableForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+            refreshTable();
         }
 
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
-        }       
-
-        private void Approvebtn_Click(object sender, EventArgs e)
-        {
-            if (userAccountsTable.SelectedRows.Count > 0)
-            {
-                DataGridViewRow selectedRow = userAccountsTable.SelectedRows[0];
-
-                // Get the value from the "Username" column
-                string usernameToApprove = selectedRow.Cells["Username"].Value.ToString();
-
-                // Establish a MySQL connection
-                string connectionString = "server=localhost;user=root;database=tubshashsalt;password=";
-
-                using (MySqlConnection connection = new MySqlConnection(connectionString))
-                {
-                    try
-                    {
-                        connection.Open();
-
-                        // Check the activation status in the database
-                        string checkActivationQuery = "SELECT Status FROM mbuserinfo WHERE Username = @Username";
-                        MySqlCommand checkActivationCommand = new MySqlCommand(checkActivationQuery, connection);
-                        checkActivationCommand.Parameters.AddWithValue("@Username", usernameToApprove);
-                        object activationStatusObj = checkActivationCommand.ExecuteScalar();
-
-                        if (activationStatusObj != null && activationStatusObj.ToString() == "ACTIVE")
-                        {
-                            MessageBox.Show("This account is already activated.", "INFORMATION", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            // Update the status in the database
-                            string updateQuery = "UPDATE mbuserinfo SET Status = @Status WHERE Username = @Username";
-                            MySqlCommand updateCommand = new MySqlCommand(updateQuery, connection);
-                            updateCommand.Parameters.AddWithValue("@Status", "ACTIVE");
-                            updateCommand.Parameters.AddWithValue("@Username", usernameToApprove);
-
-                            // Execute the UPDATE command
-                            updateCommand.ExecuteNonQuery();
-
-                            // Update the status in the DataGridView
-                            selectedRow.Cells["Status"].Value = "ACTIVE";
-
-                            MessageBox.Show("Account activated successfully.", "SUCCESS", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Error activating account: " + ex.Message, "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    finally
-                    {
-                        connection.Close();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a row first.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
-
-        private void RemoveBtn_Click(object sender, EventArgs e)
+        
+        private void approvalBtn_Click(object sender, EventArgs e)
         {
-            if (userAccountsTable.SelectedRows.Count > 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to delete this record?", "CONFIRMATION", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                string query = "SELECT * FROM mbuserinfo";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
 
-                if (result == DialogResult.Yes)
-                {
-                    DataGridViewRow selectedRow = userAccountsTable.SelectedRows[0];
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+                string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+                string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
+                MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
 
-                    // Get the value from the "Username" column (assuming it's a unique identifier)
-                    string usernameToDelete = selectedRow.Cells["Username"].Value.ToString();
-
-                    // Remove the row from the DataGridView
-                    userAccountsTable.Rows.Remove(selectedRow);
-                    DeleteUserRecordDB(usernameToDelete);
-                    
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select a row first.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void DeleteUserRecordDB(string username)
-        {
-            // Establish a MySQL connection and delete the record with the specified username
-            string connectionString = "server=localhost;user=root;database=tubshashsalt;password=";
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
-            {
                 try
                 {
-                    connection.Open();
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    selectedRow.Cells["Status"].Value = "ACTIVATED";
+                    MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
-                    // Create a DELETE command
-                    string deleteQuery = "DELETE FROM mbuserinfo WHERE Username = @Username";
-                    MySqlCommand cmd = new MySqlCommand(deleteQuery, connection);
-                    cmd.Parameters.AddWithValue("@Username", username);
+                catch (Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                }
 
-                    // Execute the DELETE command
-                    cmd.ExecuteNonQuery();
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        private void removeBtn_Click(object sender, EventArgs e)
+
+        {
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+            string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
+            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+
+            try
+            {
+
+                conn.Open();
+                cmdDataBase.ExecuteNonQuery();
+                refreshTable();
+                MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            catch (Exception b)
+            {
+                MessageBox.Show(b.Message);
+            }
+
+            finally
+            {
+                conn.Close();
+
+            }
+        }
+
+
+        }
+
+        private void refreshBtn_Click(object sender, EventArgs e)
+        {
+            refreshTable();
+        }
+
+        private void refreshTable()
+        {
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
+            using (conn = new MySqlConnection(mysqlcon))
+            {
+                string selectQuery = "SELECT * FROM mbuserinfo";
+                MySqlDataAdapter adapter = new MySqlDataAdapter(selectQuery, conn);
+                DataTable dataTable = new DataTable();
+
+                try
+                {
+                    conn.Open();
+                    adapter.Fill(dataTable);
+                    dataGridView1.DataSource = dataTable;
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error deleting record: " + ex.Message);
-                }
-                finally
-                {
-                    connection.Close();
+                    MessageBox.Show("An error occurred: " + ex.Message);
                 }
             }
-        }
-        private void HideColumnIfExists(string columnName)
-        {
-            if (userAccountsTable.Columns.Contains(columnName))
-            {
-                userAccountsTable.Columns[columnName].Visible = false;
-            }
-        }
 
-        // Event handler to update the DataGridView when a new user account is created.
-        private void HandleUserAccountCreated()
-        {
-            // Clear the existing data in the DataGridView.
-            userAccountsTable.Rows.Clear();
-            LoadUserData();
         }
 
         public void LoadUserData()
@@ -222,4 +209,3 @@ namespace ActivityNumber1
         
     }
 }
-

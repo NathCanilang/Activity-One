@@ -1,14 +1,23 @@
 ﻿using System;
-using System.Windows.Forms;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Security.Cryptography;
-using MySql.Data.MySqlClient;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using MySql.Data.MySqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace ActivityNumber1
 {
     public partial class CreateForms : Form
     {
+
         public delegate void UserAccountCreatedHandler();
         public static event UserAccountCreatedHandler UserAccountCreated;
         public static CreateForms CreateFormsInstance;        
@@ -19,6 +28,8 @@ namespace ActivityNumber1
             InitializeComponent();                        
             CreateFormsInstance = this;
 
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
             genderComboBox.Items.AddRange(genders);
             genderComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -148,6 +159,7 @@ namespace ActivityNumber1
         private void CreateForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+
         }
 
         private void backBtnCF_Click(object sender, EventArgs e)
@@ -173,9 +185,23 @@ namespace ActivityNumber1
         {
             if (showPasswordCF.Checked)
             {
+
                 passwordTextBoxCF.PasswordChar = '\0';
             }
             else
+
+                if (char.IsNumber(e.KeyChar) || char.IsControl(e.KeyChar))
+                {
+                    e.Handled = false;
+                }
+                else
+                {
+                    e.Handled = true;
+                    throw new Exception("Inputted character is not allowed");
+                }
+            } 
+            catch (Exception b)
+
             {
                 passwordTextBoxCF.PasswordChar = '*';
             }
@@ -196,38 +222,88 @@ namespace ActivityNumber1
             }
         }
 
-
-        private void ageTextBoxCF_KeyPress(object sender, KeyPressEventArgs e)
+ 
+        private void createBtnCF_Click(object sender, EventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            string adminUsername = "Admin";
+            string fixedSalt = "xCv12dFqwS";
+            string randomSalt = PasswordEncrypter.generateSalt();
+
+
+            if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
+                || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
+ 
             {
-                // Cancel the key press event
-                e.Handled = true;
-                MessageBox.Show("Please enter digits only for age.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+       
+                MessageBox.Show("Please fill out all the required data", "Missing Informations", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                genderComboBox.SelectedItem = null;
+                return;
+            }
+
+
+            if (usernameTextBoxCF.Text == adminUsername)
+            {
+                MessageBox.Show("The entered username is not allowed", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            else
+            {
+                string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
+                    "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
+                    "'" + PasswordEncrypter.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt) + "', '" + randomSalt + "','" + PasswordEncrypter.randomSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
+                MySqlCommand cmdDataBase = new MySqlCommand(insertQuery, conn);
+
+                try
+                {
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    MessageBox.Show("Account Created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    nameTextBoxCF.Clear();
+                    ageTextBoxCF.Clear();
+                    usernameTextBoxCF.Clear();
+                    passwordTextBoxCF.Clear();
+                    emailTextBoxCF.Clear();
+                    genderComboBox.SelectedItem = null;
+                }
+
+                catch (MySqlException a)
+                {
+                    if (a.Number == 1062)
+                    {
+                        MessageBox.Show("Username already exist.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show("An error occured", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+                }
+
+                catch (Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                }
+
+                finally
+                {
+                    conn.Close();
+                }     
+            }
+        }
+
+        private void showPasswordCF_CheckedChanged(object sender, EventArgs e)
+        {
+
+            if (showPasswordCF.Checked)
+            {
+                passwordTextBoxCF.PasswordChar = '\0';
             }
             else
             {
-                // Convert the current text in the ageTextBox to an integer, assuming it's empty or a valid number
-                int currentAge;
-                if (int.TryParse(ageTextBoxCF.Text + e.KeyChar, out currentAge))
-                {
-                    // Check if the age is within the desired range (1-100)
-                    if (currentAge < 1 || currentAge > 100)
-                    {
-                        e.Handled = true;
-                        MessageBox.Show("Age must be between 1 and 100.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-            }
-        }
-
-        private void ageTextBoxCF_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void createFormsBackPic_Click(object sender, EventArgs e)
-        {
+                passwordTextBoxCF.PasswordChar = '*';
+            } 
 
         }
     }
