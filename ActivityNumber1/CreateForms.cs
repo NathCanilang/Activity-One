@@ -39,13 +39,12 @@ namespace ActivityNumber1
             passwordLbl.Parent = createFormsBackPic;
             emailLbl.Parent = createFormsBackPic;
             showPasswordCF.Parent = createFormsBackPic;
-
-
         }
 
         private void CreateForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+
         }
 
         private void backBtnCF_Click(object sender, EventArgs e)
@@ -84,7 +83,7 @@ namespace ActivityNumber1
         {
             try
             {
-                if (char.IsNumber(e.KeyChar))
+                if (char.IsNumber(e.KeyChar) || char.IsControl(e.KeyChar))
                 {
                     e.Handled = false;
                 }
