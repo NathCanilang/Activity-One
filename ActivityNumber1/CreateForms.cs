@@ -118,7 +118,6 @@ namespace ActivityNumber1
                 || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
             {
                 MessageBox.Show("Please fill out all the required data", "Missing Informations", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                genderComboBox.SelectedItem = null;
                 return;
             }
 
@@ -128,7 +127,9 @@ namespace ActivityNumber1
                 return;
             }
 
-            else
+            DialogResult choices = MessageBox.Show("Are you sure to the information that you have entered?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if(choices == DialogResult.Yes)
             {
                 string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
                     "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
@@ -154,6 +155,7 @@ namespace ActivityNumber1
                     if (a.Number == 1062)
                     {
                         MessageBox.Show("Username already exist.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        usernameTextBoxCF.Clear();
                     }
                     else
                     {

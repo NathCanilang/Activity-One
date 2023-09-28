@@ -119,13 +119,13 @@ namespace ActivityNumber1
                         if (!accountActive)
                         {
                             MessageBox.Show("Wait for the admin to approve your account!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            rememberAccount();
                         }
                         else
                         {
                             if (passwordInput != databasePassword)
                             {
                                 MessageBox.Show($"Invalid Password", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                errorAttempts();
                             }
                             else
                             {
