@@ -1,16 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ActivityNumber1
 {
@@ -40,6 +31,10 @@ namespace ActivityNumber1
         private void TableForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+            dataGridView1.Columns[5].Visible = false;
+            dataGridView1.Columns[6].Visible = false;
+            dataGridView1.Columns[7].Visible = false;
+            dataGridView1.Columns[8].Visible = false;
             refreshTable();
         }
 
@@ -63,22 +58,26 @@ namespace ActivityNumber1
                 string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
                 MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
 
-                try
+                DialogResult choices = MessageBox.Show("Activate this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (choices == DialogResult.Yes)
                 {
-                    conn.Open();
-                    cmdDataBase.ExecuteNonQuery();
-                    selectedRow.Cells["Status"].Value = "ACTIVATED";
-                    MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                    try
+                    {
+                        conn.Open();
+                        cmdDataBase.ExecuteNonQuery();
+                        selectedRow.Cells["Status"].Value = "ACTIVATED";
+                        MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
 
-                catch (Exception b)
-                {
-                    MessageBox.Show(b.Message);
-                }
+                    catch (Exception b)
+                    {
+                        MessageBox.Show(b.Message);
+                    }
 
-                finally
-                {
-                    conn.Close();
+                    finally
+                    {
+                        conn.Close();
+                    }
                 }
             }
         }
@@ -96,22 +95,26 @@ namespace ActivityNumber1
             string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
             MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
 
-            try
+            DialogResult choices = MessageBox.Show("Are you sure you want to delete this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (choices == DialogResult.Yes)
             {
-                conn.Open();
-                cmdDataBase.ExecuteNonQuery();
-                refreshTable();
-                MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+                try
+                {
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    refreshTable();
+                    MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
-            catch (Exception b)
-            {
-                MessageBox.Show(b.Message);
-            }
+                catch (Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                }
 
-            finally
-            {
-                conn.Close();
+                finally
+                {
+                    conn.Close();
+                }
             }
 
         }
