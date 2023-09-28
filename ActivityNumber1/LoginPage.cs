@@ -16,6 +16,7 @@ namespace ActivityNumber1
         TableForms tableforms = new TableForms();
         RecoveryForms recoveryForms = new RecoveryForms();
         WelcomeForms welcomeForms = new WelcomeForms(); 
+        ResetPWForms resetPWForms = new ResetPWForms();
 
         public int loginAttempts = 0;
         public int currentAttempts = 3;
@@ -62,7 +63,9 @@ namespace ActivityNumber1
 
             if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
             {
-                MessageBox.Show("Please fill in all required fields.", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill in all required fields.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                passwordTextBox.Clear();
+                usernameComboBox.ResetText();
                 rememberCheckBox.CheckState = CheckState.Unchecked;
                 errorAttempts();
                 return;
@@ -113,12 +116,12 @@ namespace ActivityNumber1
                                     loginAttempts = 0;
                                     currentAttempts = 3;
                                     MessageBox.Show("Login Successful", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                                     this.WindowState = FormWindowState.Minimized;
                                     welcomeForms.ShowDialog();
                                     this.WindowState = FormWindowState.Normal;
                                     rememberAccount();
 
-                                    // Clear input fields
                                     passwordTextBox.Clear();
                                     usernameComboBox.ResetText();
                                     rememberCheckBox.CheckState = CheckState.Unchecked;
@@ -130,6 +133,7 @@ namespace ActivityNumber1
                                     MessageBox.Show("Incorrect password.", "TRY AGAIN", MessageBoxButtons.OK,MessageBoxIcon.Warning);
                                     passwordTextBox.Clear();
                                     usernameComboBox.ResetText();
+                                    rememberCheckBox.CheckState = CheckState.Unchecked;
                                     errorAttempts();
                                 }
                             }
@@ -138,6 +142,7 @@ namespace ActivityNumber1
                                 MessageBox.Show("Invalid credentials", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 passwordTextBox.Clear();
                                 usernameComboBox.ResetText();
+                                rememberCheckBox.CheckState = CheckState.Unchecked;
                                 errorAttempts();
                             }
                             
@@ -147,6 +152,7 @@ namespace ActivityNumber1
                             MessageBox.Show("Incorrect username.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             passwordTextBox.Clear();
                             usernameComboBox.ResetText();
+                            rememberCheckBox.CheckState = CheckState.Unchecked;
                             errorAttempts();
                         }
 
@@ -163,7 +169,6 @@ namespace ActivityNumber1
                 }
             }
         }
-
 
 
         public void errorAttempts()
@@ -240,6 +245,21 @@ namespace ActivityNumber1
             this.WindowState = FormWindowState.Minimized;
             recoveryForms.ShowDialog();
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void loginFormBackgroundPnl_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void loginFormBackground_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void LoginPage_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

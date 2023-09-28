@@ -46,8 +46,8 @@ namespace ActivityNumber1
             this.usernameLbl = new System.Windows.Forms.Label();
             this.passwordLbl = new System.Windows.Forms.Label();
             this.emailLbl = new System.Windows.Forms.Label();
-            this.createFormsBackPic = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.createFormsBackPic = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.createFormsBackPic)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,7 +55,7 @@ namespace ActivityNumber1
             // 
             this.nameTextBoxCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nameTextBoxCF.Location = new System.Drawing.Point(433, 54);
-            this.nameTextBoxCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nameTextBoxCF.Margin = new System.Windows.Forms.Padding(2);
             this.nameTextBoxCF.Multiline = true;
             this.nameTextBoxCF.Name = "nameTextBoxCF";
             this.nameTextBoxCF.Size = new System.Drawing.Size(192, 28);
@@ -66,7 +66,7 @@ namespace ActivityNumber1
             // 
             this.ageTextBoxCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ageTextBoxCF.Location = new System.Drawing.Point(433, 114);
-            this.ageTextBoxCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ageTextBoxCF.Margin = new System.Windows.Forms.Padding(2);
             this.ageTextBoxCF.Multiline = true;
             this.ageTextBoxCF.Name = "ageTextBoxCF";
             this.ageTextBoxCF.Size = new System.Drawing.Size(92, 28);
@@ -78,7 +78,7 @@ namespace ActivityNumber1
             // 
             this.usernameTextBoxCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextBoxCF.Location = new System.Drawing.Point(433, 171);
-            this.usernameTextBoxCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.usernameTextBoxCF.Margin = new System.Windows.Forms.Padding(2);
             this.usernameTextBoxCF.Multiline = true;
             this.usernameTextBoxCF.Name = "usernameTextBoxCF";
             this.usernameTextBoxCF.Size = new System.Drawing.Size(192, 28);
@@ -88,7 +88,7 @@ namespace ActivityNumber1
             // 
             this.passwordTextBoxCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordTextBoxCF.Location = new System.Drawing.Point(433, 229);
-            this.passwordTextBoxCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passwordTextBoxCF.Margin = new System.Windows.Forms.Padding(2);
             this.passwordTextBoxCF.Multiline = true;
             this.passwordTextBoxCF.Name = "passwordTextBoxCF";
             this.passwordTextBoxCF.PasswordChar = '*';
@@ -99,7 +99,7 @@ namespace ActivityNumber1
             // 
             this.emailTextBoxCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTextBoxCF.Location = new System.Drawing.Point(433, 301);
-            this.emailTextBoxCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.emailTextBoxCF.Margin = new System.Windows.Forms.Padding(2);
             this.emailTextBoxCF.Multiline = true;
             this.emailTextBoxCF.Name = "emailTextBoxCF";
             this.emailTextBoxCF.Size = new System.Drawing.Size(192, 28);
@@ -111,7 +111,7 @@ namespace ActivityNumber1
             this.createBtnCF.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.createBtnCF.ForeColor = System.Drawing.Color.White;
             this.createBtnCF.Location = new System.Drawing.Point(433, 334);
-            this.createBtnCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.createBtnCF.Margin = new System.Windows.Forms.Padding(2);
             this.createBtnCF.Name = "createBtnCF";
             this.createBtnCF.Size = new System.Drawing.Size(100, 32);
             this.createBtnCF.TabIndex = 7;
@@ -126,7 +126,7 @@ namespace ActivityNumber1
             this.showPasswordCF.Font = new System.Drawing.Font("Simple Handmade", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.showPasswordCF.ForeColor = System.Drawing.Color.White;
             this.showPasswordCF.Location = new System.Drawing.Point(433, 257);
-            this.showPasswordCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.showPasswordCF.Margin = new System.Windows.Forms.Padding(2);
             this.showPasswordCF.Name = "showPasswordCF";
             this.showPasswordCF.Size = new System.Drawing.Size(108, 20);
             this.showPasswordCF.TabIndex = 8;
@@ -139,7 +139,7 @@ namespace ActivityNumber1
             this.genderComboBox.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.genderComboBox.FormattingEnabled = true;
             this.genderComboBox.Location = new System.Drawing.Point(533, 114);
-            this.genderComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.genderComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.genderComboBox.Name = "genderComboBox";
             this.genderComboBox.Size = new System.Drawing.Size(92, 28);
             this.genderComboBox.TabIndex = 9;
@@ -151,7 +151,7 @@ namespace ActivityNumber1
             this.backBtnCF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.backBtnCF.ForeColor = System.Drawing.Color.White;
             this.backBtnCF.Location = new System.Drawing.Point(537, 334);
-            this.backBtnCF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.backBtnCF.Margin = new System.Windows.Forms.Padding(2);
             this.backBtnCF.Name = "backBtnCF";
             this.backBtnCF.Size = new System.Drawing.Size(87, 32);
             this.backBtnCF.TabIndex = 10;
@@ -237,17 +237,6 @@ namespace ActivityNumber1
             this.emailLbl.TabIndex = 16;
             this.emailLbl.Text = "E-mail";
             // 
-            // createFormsBackPic
-            // 
-            this.createFormsBackPic.Image = global::ActivityNumber1.Properties.Resources.Create_Forms_Background;
-            this.createFormsBackPic.Location = new System.Drawing.Point(0, 0);
-            this.createFormsBackPic.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.createFormsBackPic.Name = "createFormsBackPic";
-            this.createFormsBackPic.Size = new System.Drawing.Size(759, 405);
-            this.createFormsBackPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.createFormsBackPic.TabIndex = 17;
-            this.createFormsBackPic.TabStop = false;
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -259,6 +248,18 @@ namespace ActivityNumber1
             this.label2.Size = new System.Drawing.Size(73, 18);
             this.label2.TabIndex = 18;
             this.label2.Text = "@gmail.com";
+            // 
+            // createFormsBackPic
+            // 
+            this.createFormsBackPic.Image = global::ActivityNumber1.Properties.Resources.Create_Forms_Background;
+            this.createFormsBackPic.Location = new System.Drawing.Point(0, 0);
+            this.createFormsBackPic.Margin = new System.Windows.Forms.Padding(2);
+            this.createFormsBackPic.Name = "createFormsBackPic";
+            this.createFormsBackPic.Size = new System.Drawing.Size(759, 405);
+            this.createFormsBackPic.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.createFormsBackPic.TabIndex = 17;
+            this.createFormsBackPic.TabStop = false;
+            this.createFormsBackPic.Click += new System.EventHandler(this.createFormsBackPic_Click);
             // 
             // CreateForms
             // 
@@ -283,7 +284,7 @@ namespace ActivityNumber1
             this.Controls.Add(this.nameTextBoxCF);
             this.Controls.Add(this.createFormsBackPic);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(770, 445);
             this.MinimumSize = new System.Drawing.Size(770, 445);
             this.Name = "CreateForms";

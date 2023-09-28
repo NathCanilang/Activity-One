@@ -110,6 +110,12 @@
     <Compile Include="CustomComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ResetPWForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResetPWForms.Designer.cs">
+      <DependentUpon>ResetPWForms.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -138,6 +144,9 @@
     </Compile>
     <EmbeddedResource Include="CreateForms.resx">
       <DependentUpon>CreateForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResetPWForms.resx">
+      <DependentUpon>ResetPWForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginPage.resx">
       <DependentUpon>LoginPage.cs</DependentUpon>

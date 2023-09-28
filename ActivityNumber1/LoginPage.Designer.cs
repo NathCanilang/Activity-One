@@ -54,7 +54,7 @@
             // 
             this.loginBtn.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.loginBtn.Location = new System.Drawing.Point(81, 256);
-            this.loginBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginBtn.Margin = new System.Windows.Forms.Padding(2);
             this.loginBtn.Name = "loginBtn";
             this.loginBtn.Size = new System.Drawing.Size(153, 40);
             this.loginBtn.TabIndex = 0;
@@ -68,7 +68,7 @@
             this.passwordTextBox.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.passwordTextBox.ForeColor = System.Drawing.Color.White;
             this.passwordTextBox.Location = new System.Drawing.Point(25, 176);
-            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.passwordTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.passwordTextBox.Multiline = true;
             this.passwordTextBox.Name = "passwordTextBox";
             this.passwordTextBox.PasswordChar = '*';
@@ -139,12 +139,13 @@
             this.loginFormBackgroundPnl.Controls.Add(this.passwordTextBox);
             this.loginFormBackgroundPnl.Controls.Add(this.loginBtn);
             this.loginFormBackgroundPnl.Location = new System.Drawing.Point(438, 0);
-            this.loginFormBackgroundPnl.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginFormBackgroundPnl.Margin = new System.Windows.Forms.Padding(2);
             this.loginFormBackgroundPnl.MaximumSize = new System.Drawing.Size(316, 392);
             this.loginFormBackgroundPnl.MinimumSize = new System.Drawing.Size(316, 392);
             this.loginFormBackgroundPnl.Name = "loginFormBackgroundPnl";
             this.loginFormBackgroundPnl.Size = new System.Drawing.Size(316, 392);
             this.loginFormBackgroundPnl.TabIndex = 9;
+            this.loginFormBackgroundPnl.Paint += new System.Windows.Forms.PaintEventHandler(this.loginFormBackgroundPnl_Paint);
             // 
             // rememberCheckBox
             // 
@@ -152,7 +153,7 @@
             this.rememberCheckBox.Font = new System.Drawing.Font("Simple Handmade", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rememberCheckBox.ForeColor = System.Drawing.Color.White;
             this.rememberCheckBox.Location = new System.Drawing.Point(26, 209);
-            this.rememberCheckBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rememberCheckBox.Margin = new System.Windows.Forms.Padding(2);
             this.rememberCheckBox.Name = "rememberCheckBox";
             this.rememberCheckBox.Size = new System.Drawing.Size(101, 20);
             this.rememberCheckBox.TabIndex = 13;
@@ -166,7 +167,7 @@
             this.usernameComboBox.ForeColor = System.Drawing.Color.White;
             this.usernameComboBox.FormattingEnabled = true;
             this.usernameComboBox.Location = new System.Drawing.Point(26, 106);
-            this.usernameComboBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.usernameComboBox.Margin = new System.Windows.Forms.Padding(2);
             this.usernameComboBox.Name = "usernameComboBox";
             this.usernameComboBox.Size = new System.Drawing.Size(217, 26);
             this.usernameComboBox.TabIndex = 12;
@@ -175,7 +176,7 @@
             // 
             this.closeBtn.Image = global::ActivityNumber1.Properties.Resources.ClosePassword;
             this.closeBtn.Location = new System.Drawing.Point(245, 176);
-            this.closeBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.closeBtn.Margin = new System.Windows.Forms.Padding(2);
             this.closeBtn.Name = "closeBtn";
             this.closeBtn.Size = new System.Drawing.Size(42, 28);
             this.closeBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -188,7 +189,7 @@
             // 
             this.showBtn.Image = global::ActivityNumber1.Properties.Resources.ShowPassword;
             this.showBtn.Location = new System.Drawing.Point(245, 176);
-            this.showBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.showBtn.Margin = new System.Windows.Forms.Padding(2);
             this.showBtn.Name = "showBtn";
             this.showBtn.Size = new System.Drawing.Size(42, 28);
             this.showBtn.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -202,7 +203,7 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.createAccountLbl);
             this.panel1.Location = new System.Drawing.Point(1, 353);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(315, 37);
             this.panel1.TabIndex = 9;
@@ -222,12 +223,13 @@
             // 
             this.loginFormBackground.Image = global::ActivityNumber1.Properties.Resources.Moonbase_login3;
             this.loginFormBackground.Location = new System.Drawing.Point(0, 0);
-            this.loginFormBackground.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.loginFormBackground.Margin = new System.Windows.Forms.Padding(2);
             this.loginFormBackground.Name = "loginFormBackground";
             this.loginFormBackground.Size = new System.Drawing.Size(440, 388);
             this.loginFormBackground.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.loginFormBackground.TabIndex = 6;
             this.loginFormBackground.TabStop = false;
+            this.loginFormBackground.Click += new System.EventHandler(this.loginFormBackground_Click);
             // 
             // LoginPage
             // 
@@ -237,12 +239,13 @@
             this.Controls.Add(this.loginFormBackground);
             this.Controls.Add(this.loginFormBackgroundPnl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(770, 434);
             this.MinimumSize = new System.Drawing.Size(770, 434);
             this.Name = "LoginPage";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Moonbase Login";
+            this.Load += new System.EventHandler(this.LoginPage_Load);
             this.loginFormBackgroundPnl.ResumeLayout(false);
             this.loginFormBackgroundPnl.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.closeBtn)).EndInit();

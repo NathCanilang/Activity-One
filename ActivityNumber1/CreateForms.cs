@@ -60,9 +60,10 @@ namespace ActivityNumber1
             string password = passwordTextBoxCF.Text;
             string email = emailTextBoxCF.Text;
 
+
             if (string.IsNullOrWhiteSpace(name) || string.IsNullOrWhiteSpace(gender) || string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(email))
             {
-                MessageBox.Show("Please fill in all credentials.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please fill in all credentials.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             else if (!int.TryParse(ageTextBoxCF.Text, out age) || age <= 0)
@@ -77,11 +78,12 @@ namespace ActivityNumber1
                 usernameTextBoxCF.Clear();
                 passwordTextBoxCF.Clear();
                 emailTextBoxCF.Clear();
+                genderComboBox.SelectedItem = null;
                 return;
             }
             else
             {
-                MessageBox.Show("Failed to insert data.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Failed to insert data.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
         }
@@ -185,7 +187,7 @@ namespace ActivityNumber1
             {
                 // Cancel the key press event
                 e.Handled = true;
-                MessageBox.Show("Name must contain alphabetic characters only.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Name must contain alphabetic characters only.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else if (e.KeyChar == (char)Keys.Enter)
             {
@@ -201,7 +203,7 @@ namespace ActivityNumber1
             {
                 // Cancel the key press event
                 e.Handled = true;
-                MessageBox.Show("Please enter digits only for age.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter digits only for age.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
@@ -213,13 +215,18 @@ namespace ActivityNumber1
                     if (currentAge < 1 || currentAge > 100)
                     {
                         e.Handled = true;
-                        MessageBox.Show("Age must be between 1 and 100.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Age must be between 1 and 100.", "TRY AGAIN", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
         }
 
         private void ageTextBoxCF_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void createFormsBackPic_Click(object sender, EventArgs e)
         {
 
         }
