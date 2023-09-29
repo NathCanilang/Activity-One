@@ -1,92 +1,151 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace ActivityNumber1
 {
     public partial class TableForms : Form
     {
         public static TableForms TableFormsInstance;
-        StoredAccountsForms storedAccountsForms = new StoredAccountsForms();      
+        private MySqlConnection conn;
+        
 
         public TableForms()
         {
             InitializeComponent();
             TableFormsInstance = this;
+
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            dataGridView1.DataSource = dataTable;
         }
 
         private void TableForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+            dataGridView1.Columns[5].Visible = false;
+            dataGridView1.Columns[6].Visible = false;
+            dataGridView1.Columns[7].Visible = false;
+            dataGridView1.Columns[8].Visible = false;
+            refreshTable();
         }
 
         private void backBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
-        public void addAccount(string name, string age, string gender, string username, string password, string email)
-        {
-               userAccountsTable.Rows.Add(name, age, gender, username, password, email);
-        }
-
+        
         private void approvalBtn_Click(object sender, EventArgs e)
         {
-            int rowsSelected = userAccountsTable.SelectedRows.Count;
-
-            if (rowsSelected > 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                foreach (DataGridViewRow selectedRow in userAccountsTable.SelectedRows)
+                string query = "SELECT * FROM mbuserinfo";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+                DataTable dataTable = new DataTable();
+                adapter.Fill(dataTable);
+
+                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+                string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+                string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
+                MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+
+                DialogResult choices = MessageBox.Show("Activate this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (choices == DialogResult.Yes)
                 {
-     
-                    string name = selectedRow.Cells["nameColumn"].Value.ToString();
-                    string age = selectedRow.Cells["ageColumn"].Value.ToString();
-                    string gender = selectedRow.Cells["genderColumn"].Value.ToString();
-                    string username = selectedRow.Cells["usernameColumn"].Value.ToString();
-                    string password = selectedRow.Cells["passwordColumn"].Value.ToString();
-                    string email = selectedRow.Cells["emailColumn"].Value.ToString();
-                  
-                    storedAccountsForms.addAccount(name, age, gender, username, password, email);
-                    
-                    MessageBox.Show("Account Approved", "Approval", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    userAccountsTable.Rows.Remove(selectedRow);
+                    try
+                    {
+                        conn.Open();
+                        cmdDataBase.ExecuteNonQuery();
+                        selectedRow.Cells["Status"].Value = "ACTIVATED";
+                        MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    catch (Exception b)
+                    {
+                        MessageBox.Show(b.Message);
+                    }
+
+                    finally
+                    {
+                        conn.Close();
+                    }
                 }
             }
-            else if (rowsSelected == 0)
-            {
-                MessageBox.Show("Select a row first", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
-        private void storedAccBtn_Click(object sender, EventArgs e)
-        {
-            this.WindowState = FormWindowState.Minimized;
-            storedAccountsForms.ShowDialog();
-            this.WindowState = FormWindowState.Normal;
         }
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            if (userAccountsTable.SelectedRows.Count > 0)
+            string query = "SELECT * FROM mbuserinfo";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
+            DataTable dataTable = new DataTable();
+            adapter.Fill(dataTable);
+
+            DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
+            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+            string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
+            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+
+            DialogResult choices = MessageBox.Show("Are you sure you want to delete this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (choices == DialogResult.Yes)
             {
-                DialogResult choices = MessageBox.Show("Are you sure to reject this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (choices == DialogResult.Yes)
+                try
                 {
-                    int selectedIndex = userAccountsTable.SelectedRows[0].Index;
-                    userAccountsTable.Rows.RemoveAt(selectedIndex);
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    refreshTable();
+                    MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                catch (Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                }
+
+                finally
+                {
+                    conn.Close();
                 }
             }
-            else if (userAccountsTable.SelectedRows.Count == 0)
+
+        }
+
+        private void refreshBtn_Click(object sender, EventArgs e)
+        {
+            refreshTable();
+        }
+
+        private void refreshTable()
+        {
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
+
+            using (conn = new MySqlConnection(mysqlcon))
             {
-                MessageBox.Show("Please Select A Row First", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                string selectQuery = "SELECT * FROM mbuserinfo";
+                MySqlDataAdapter adapter = new MySqlDataAdapter(selectQuery, conn);
+                DataTable dataTable = new DataTable();
+
+                try
+                {
+                    conn.Open();
+                    adapter.Fill(dataTable);
+                    dataGridView1.DataSource = dataTable;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred: " + ex.Message);
+                }
             }
         }
     }
 }
-

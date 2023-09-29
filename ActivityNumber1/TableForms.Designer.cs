@@ -29,91 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableForms));
-            this.userAccountsTable = new System.Windows.Forms.DataGridView();
-            this.nameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ageColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.genderColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.usernameColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.passwordColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.emailColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.approvalBtn = new System.Windows.Forms.Button();
             this.removeBtn = new System.Windows.Forms.Button();
             this.backBtn = new System.Windows.Forms.Button();
-            this.storedAccBtn = new System.Windows.Forms.Button();
             this.tableFormsBackground = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.userAccountsTable)).BeginInit();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.refreshBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.tableFormsBackground)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // userAccountsTable
-            // 
-            this.userAccountsTable.AllowUserToAddRows = false;
-            this.userAccountsTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.userAccountsTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.userAccountsTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.nameColumn,
-            this.ageColumn,
-            this.genderColumn,
-            this.usernameColumn,
-            this.passwordColumn,
-            this.emailColumn});
-            this.userAccountsTable.Location = new System.Drawing.Point(57, 48);
-            this.userAccountsTable.Name = "userAccountsTable";
-            this.userAccountsTable.ReadOnly = true;
-            this.userAccountsTable.RowHeadersWidth = 51;
-            this.userAccountsTable.RowTemplate.Height = 24;
-            this.userAccountsTable.Size = new System.Drawing.Size(723, 370);
-            this.userAccountsTable.TabIndex = 0;
-            // 
-            // nameColumn
-            // 
-            this.nameColumn.HeaderText = "Full Name";
-            this.nameColumn.MinimumWidth = 6;
-            this.nameColumn.Name = "nameColumn";
-            this.nameColumn.ReadOnly = true;
-            // 
-            // ageColumn
-            // 
-            this.ageColumn.HeaderText = "Age";
-            this.ageColumn.MinimumWidth = 6;
-            this.ageColumn.Name = "ageColumn";
-            this.ageColumn.ReadOnly = true;
-            // 
-            // genderColumn
-            // 
-            this.genderColumn.HeaderText = "Gender";
-            this.genderColumn.MinimumWidth = 6;
-            this.genderColumn.Name = "genderColumn";
-            this.genderColumn.ReadOnly = true;
-            // 
-            // usernameColumn
-            // 
-            this.usernameColumn.HeaderText = "Username";
-            this.usernameColumn.MinimumWidth = 6;
-            this.usernameColumn.Name = "usernameColumn";
-            this.usernameColumn.ReadOnly = true;
-            // 
-            // passwordColumn
-            // 
-            this.passwordColumn.HeaderText = "Password";
-            this.passwordColumn.MinimumWidth = 6;
-            this.passwordColumn.Name = "passwordColumn";
-            this.passwordColumn.ReadOnly = true;
-            this.passwordColumn.Visible = false;
-            // 
-            // emailColumn
-            // 
-            this.emailColumn.HeaderText = "E-mail";
-            this.emailColumn.MinimumWidth = 6;
-            this.emailColumn.Name = "emailColumn";
-            this.emailColumn.ReadOnly = true;
             // 
             // approvalBtn
             // 
             this.approvalBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.approvalBtn.Location = new System.Drawing.Point(796, 48);
+            this.approvalBtn.Location = new System.Drawing.Point(597, 39);
+            this.approvalBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.approvalBtn.Name = "approvalBtn";
-            this.approvalBtn.Size = new System.Drawing.Size(148, 48);
+            this.approvalBtn.Size = new System.Drawing.Size(111, 39);
             this.approvalBtn.TabIndex = 1;
             this.approvalBtn.Text = "Approve";
             this.approvalBtn.UseVisualStyleBackColor = true;
@@ -122,9 +54,10 @@
             // removeBtn
             // 
             this.removeBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removeBtn.Location = new System.Drawing.Point(796, 154);
+            this.removeBtn.Location = new System.Drawing.Point(597, 125);
+            this.removeBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.removeBtn.Name = "removeBtn";
-            this.removeBtn.Size = new System.Drawing.Size(148, 48);
+            this.removeBtn.Size = new System.Drawing.Size(111, 39);
             this.removeBtn.TabIndex = 2;
             this.removeBtn.Text = "Reject";
             this.removeBtn.UseVisualStyleBackColor = true;
@@ -133,72 +66,84 @@
             // backBtn
             // 
             this.backBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backBtn.Location = new System.Drawing.Point(796, 370);
+            this.backBtn.Location = new System.Drawing.Point(597, 301);
+            this.backBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backBtn.Name = "backBtn";
-            this.backBtn.Size = new System.Drawing.Size(148, 48);
+            this.backBtn.Size = new System.Drawing.Size(111, 39);
             this.backBtn.TabIndex = 3;
             this.backBtn.Text = "Back";
             this.backBtn.UseVisualStyleBackColor = true;
             this.backBtn.Click += new System.EventHandler(this.backBtn_Click);
             // 
-            // storedAccBtn
-            // 
-            this.storedAccBtn.Font = new System.Drawing.Font("Simple Handmade", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.storedAccBtn.Location = new System.Drawing.Point(796, 265);
-            this.storedAccBtn.Name = "storedAccBtn";
-            this.storedAccBtn.Size = new System.Drawing.Size(148, 48);
-            this.storedAccBtn.TabIndex = 5;
-            this.storedAccBtn.Text = "Stored Accounts";
-            this.storedAccBtn.UseVisualStyleBackColor = true;
-            this.storedAccBtn.Click += new System.EventHandler(this.storedAccBtn_Click);
-            // 
             // tableFormsBackground
             // 
             this.tableFormsBackground.Image = global::ActivityNumber1.Properties.Resources.TUBA_OuterSpace;
             this.tableFormsBackground.Location = new System.Drawing.Point(0, -2);
+            this.tableFormsBackground.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableFormsBackground.Name = "tableFormsBackground";
-            this.tableFormsBackground.Size = new System.Drawing.Size(1005, 467);
+            this.tableFormsBackground.Size = new System.Drawing.Size(754, 379);
             this.tableFormsBackground.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.tableFormsBackground.TabIndex = 6;
             this.tableFormsBackground.TabStop = false;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(29, 39);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(542, 301);
+            this.dataGridView1.TabIndex = 7;
+            // 
+            // refreshBtn
+            // 
+            this.refreshBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refreshBtn.Location = new System.Drawing.Point(597, 210);
+            this.refreshBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(111, 39);
+            this.refreshBtn.TabIndex = 8;
+            this.refreshBtn.Text = "Refresh";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
+            // 
             // TableForms
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 463);
-            this.Controls.Add(this.storedAccBtn);
+            this.ClientSize = new System.Drawing.Size(754, 383);
+            this.Controls.Add(this.refreshBtn);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.backBtn);
             this.Controls.Add(this.removeBtn);
             this.Controls.Add(this.approvalBtn);
-            this.Controls.Add(this.userAccountsTable);
             this.Controls.Add(this.tableFormsBackground);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1021, 510);
-            this.MinimumSize = new System.Drawing.Size(1021, 510);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(770, 422);
+            this.MinimumSize = new System.Drawing.Size(770, 422);
             this.Name = "TableForms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin Account Control";
             this.Load += new System.EventHandler(this.TableForms_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.userAccountsTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tableFormsBackground)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        public System.Windows.Forms.DataGridView userAccountsTable;
         private System.Windows.Forms.Button approvalBtn;
         private System.Windows.Forms.Button removeBtn;
         private System.Windows.Forms.Button backBtn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ageColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn genderColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn usernameColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn passwordColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn emailColumn;
-        private System.Windows.Forms.Button storedAccBtn;
         private System.Windows.Forms.PictureBox tableFormsBackground;
+        public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button refreshBtn;
     }
 }

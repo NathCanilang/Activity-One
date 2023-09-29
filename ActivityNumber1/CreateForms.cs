@@ -1,27 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using MySql.Data.MySqlClient;
 
 namespace ActivityNumber1
 {
     public partial class CreateForms : Form
     {
         public static CreateForms CreateFormsInstance;
-        bool usernameExist = false;
-        private string[] genders = { "Male", "Female"};
+        private string[] genders = {"Male", "Female"};
+
+        private MySqlConnection conn;
         public CreateForms()
         {
             InitializeComponent();
+            
             CreateFormsInstance = this;
 
+            string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
+            conn = new MySqlConnection(mysqlcon);
             genderComboBox.Items.AddRange(genders);
             genderComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 
@@ -37,6 +33,7 @@ namespace ActivityNumber1
         private void CreateForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
+
         }
 
         private void backBtnCF_Click(object sender, EventArgs e)
@@ -75,7 +72,7 @@ namespace ActivityNumber1
         {
             try
             {
-                if (char.IsNumber(e.KeyChar))
+                if (char.IsNumber(e.KeyChar) || char.IsControl(e.KeyChar))
                 {
                     e.Handled = false;
                 }
@@ -98,62 +95,73 @@ namespace ActivityNumber1
                 genderComboBox.Text = genderComboBox.SelectedItem.ToString();
             }
         }
-
+ 
         private void createBtnCF_Click(object sender, EventArgs e)
         {
+            string adminUsername = "Admin";
+            string fixedSalt = "xCv12dFqwS";
+            string randomSalt = PasswordEncrypter.generateSalt();
+            string addEmail = "@gmail.com";
+
+
             if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
                 || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
             {
                 MessageBox.Show("Please fill out all the required data", "Missing Informations", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                genderComboBox.SelectedItem = null;
                 return;
             }
 
-            else
+            if (usernameTextBoxCF.Text == adminUsername)
             {
-                DialogResult choices = MessageBox.Show("Are you sure to the information that you have entered?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (choices == DialogResult.Yes)
-                {
-                    if (string.IsNullOrWhiteSpace(nameTextBoxCF.Text) || string.IsNullOrWhiteSpace(ageTextBoxCF.Text) || string.IsNullOrWhiteSpace(usernameTextBoxCF.Text)
-                || string.IsNullOrWhiteSpace(passwordTextBoxCF.Text) || string.IsNullOrWhiteSpace(emailTextBoxCF.Text) || genderComboBox.SelectedItem == null)
-                    {
-                        MessageBox.Show("Please fill out all the required data", "Missing Informations", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        genderComboBox.SelectedItem = null;
-                        return;
-                    }
-                    
-                    if (usernameTextBoxCF.Text.Trim().Equals("Admin", StringComparison.OrdinalIgnoreCase))
-                    {
-                        MessageBox.Show("The username 'Admin' is not allowed.", "Invalid Username", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    
-                    usernameExist = false;
-                    foreach (DataGridViewRow row in TableForms.TableFormsInstance.userAccountsTable.Rows)
-                    {
-                        string rowUsername = row.Cells["usernameColumn"].Value?.ToString();
-                        if (rowUsername == usernameTextBoxCF.Text)
-                        {
-                            usernameExist = true;
-                            MessageBox.Show("Username Already Exists", "Attention", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                            usernameTextBoxCF.Clear();
-                            break;
-                        }
-                    }
-                    if (!usernameExist)
-                    {
-                        string gmailAttatch = emailTextBoxCF.Text + "@gmail.com";
-                        TableForms.TableFormsInstance.addAccount(nameTextBoxCF.Text, ageTextBoxCF.Text, genderComboBox.SelectedItem.ToString(), usernameTextBoxCF.Text, passwordTextBoxCF.Text, gmailAttatch);
-                        MessageBox.Show("Account Created, Wait for the admin to approve your account.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("The entered username is not allowed", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
 
-                        nameTextBoxCF.Clear();
-                        ageTextBoxCF.Clear();
+            DialogResult choices = MessageBox.Show("Are you sure to the information that you have entered?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if(choices == DialogResult.Yes)
+            {
+                string insertQuery = "INSERT INTO mbuserinfo (FullName, Age, Gender, Username, Email, HashedPassword, FixedSaltedPassword, RandomString, RandomSaltedPassword) " +
+                    "values('" + this.nameTextBoxCF.Text + "', '" + this.ageTextBoxCF.Text + "', '" + this.genderComboBox.SelectedItem.ToString() + "', '" + this.usernameTextBoxCF.Text + "', '" + this.emailTextBoxCF.Text + addEmail+ "', '" + PasswordEncrypter.hashPassword(passwordTextBoxCF.Text) + "', " +
+                    "'" + PasswordEncrypter.fixedSaltPassword(passwordTextBoxCF.Text, fixedSalt) + "', '" + randomSalt + "','" + PasswordEncrypter.randomSaltPassword(passwordTextBoxCF.Text, randomSalt) + "')";
+                MySqlCommand cmdDataBase = new MySqlCommand(insertQuery, conn);
+
+                try
+                {
+                    conn.Open();
+                    cmdDataBase.ExecuteNonQuery();
+                    MessageBox.Show("Account Created!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    nameTextBoxCF.Clear();
+                    ageTextBoxCF.Clear();
+                    usernameTextBoxCF.Clear();
+                    passwordTextBoxCF.Clear();
+                    emailTextBoxCF.Clear();
+                    genderComboBox.SelectedItem = null;
+                }
+
+                catch (MySqlException a)
+                {
+                    if (a.Number == 1062)
+                    {
+                        MessageBox.Show("Username already exist.", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         usernameTextBoxCF.Clear();
-                        passwordTextBoxCF.Clear();
-                        emailTextBoxCF.Clear();
-                        genderComboBox.SelectedItem = null;
+                    }
+                    else
+                    {
+                        MessageBox.Show("An error occured", "Registration", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+
+                catch (Exception b)
+                {
+                    MessageBox.Show(b.Message);
+                }
+
+                finally
+                {
+                    conn.Close();
+                }     
             }
         }
 
@@ -166,8 +174,7 @@ namespace ActivityNumber1
             else
             {
                 passwordTextBoxCF.PasswordChar = '*';
-            }
-            
+            } 
         }
     }
 }
