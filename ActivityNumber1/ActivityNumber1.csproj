@@ -206,5 +206,8 @@
   <ItemGroup>
     <None Include="Resources\Create Forms Background.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Change Password.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
