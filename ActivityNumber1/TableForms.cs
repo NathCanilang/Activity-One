@@ -47,33 +47,29 @@ namespace ActivityNumber1
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                string query = "SELECT * FROM mbuserinfo";
-                MySqlCommand cmd = new MySqlCommand(query, conn);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-                DataTable dataTable = new DataTable();
-                adapter.Fill(dataTable);
+                DialogResult choices = MessageBox.Show("Activate selected accounts?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-                string accountUsername = selectedRow.Cells["Username"].Value.ToString();
-                string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
-                MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
-
-                DialogResult choices = MessageBox.Show("Activate this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (choices == DialogResult.Yes)
                 {
                     try
                     {
                         conn.Open();
-                        cmdDataBase.ExecuteNonQuery();
-                        selectedRow.Cells["Status"].Value = "ACTIVATED";
-                        MessageBox.Show("Account updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
 
-                    catch (Exception b)
+                        foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                        {
+                            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+                            string updateQuery = $"UPDATE mbuserinfo SET Status = 'ACTIVATED' WHERE Username = '{accountUsername}'";
+                            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+                            cmdDataBase.ExecuteNonQuery();
+                            selectedRow.Cells["Status"].Value = "ACTIVATED";
+                        }
+
+                        MessageBox.Show("Selected accounts updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(b.Message);
+                        MessageBox.Show("Error: " + ex.Message);
                     }
-
                     finally
                     {
                         conn.Close();
