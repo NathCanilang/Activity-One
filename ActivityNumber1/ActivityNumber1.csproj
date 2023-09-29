@@ -107,6 +107,12 @@
     <Compile Include="CreateForms.Designer.cs">
       <DependentUpon>CreateForms.cs</DependentUpon>
     </Compile>
+    <Compile Include="ResetForms.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ResetForms.Designer.cs">
+      <DependentUpon>ResetForms.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginPage.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </Compile>
     <EmbeddedResource Include="RecoveryForms.resx">
       <DependentUpon>RecoveryForms.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResetForms.resx">
+      <DependentUpon>ResetForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TableForms.resx">
       <DependentUpon>TableForms.cs</DependentUpon>
