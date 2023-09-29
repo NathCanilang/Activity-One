@@ -220,6 +220,7 @@ namespace ActivityNumber1
             passwordTextBox.Clear();
             usernameComboBox.ResetText();
             rememberCheckBox.CheckState = CheckState.Unchecked;
-        }
+        }   
+        //
     }
 }

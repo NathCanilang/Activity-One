@@ -47,7 +47,7 @@
             this.usernameTextBoxRF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.usernameTextBoxRF.ForeColor = System.Drawing.Color.White;
             this.usernameTextBoxRF.Location = new System.Drawing.Point(98, 202);
-            this.usernameTextBoxRF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.usernameTextBoxRF.Margin = new System.Windows.Forms.Padding(2);
             this.usernameTextBoxRF.Multiline = true;
             this.usernameTextBoxRF.Name = "usernameTextBoxRF";
             this.usernameTextBoxRF.Size = new System.Drawing.Size(201, 32);
@@ -59,7 +59,7 @@
             this.emailTextBoxRF.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.emailTextBoxRF.ForeColor = System.Drawing.Color.White;
             this.emailTextBoxRF.Location = new System.Drawing.Point(98, 239);
-            this.emailTextBoxRF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.emailTextBoxRF.Margin = new System.Windows.Forms.Padding(2);
             this.emailTextBoxRF.Multiline = true;
             this.emailTextBoxRF.Name = "emailTextBoxRF";
             this.emailTextBoxRF.Size = new System.Drawing.Size(201, 32);
@@ -95,7 +95,7 @@
             this.verifyBtn.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.verifyBtn.ForeColor = System.Drawing.Color.White;
             this.verifyBtn.Location = new System.Drawing.Point(96, 274);
-            this.verifyBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.verifyBtn.Margin = new System.Windows.Forms.Padding(2);
             this.verifyBtn.Name = "verifyBtn";
             this.verifyBtn.Size = new System.Drawing.Size(97, 34);
             this.verifyBtn.TabIndex = 4;
@@ -109,7 +109,7 @@
             this.BackBtn.Font = new System.Drawing.Font("Simple Handmade", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.BackBtn.ForeColor = System.Drawing.Color.White;
             this.BackBtn.Location = new System.Drawing.Point(201, 274);
-            this.BackBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BackBtn.Margin = new System.Windows.Forms.Padding(2);
             this.BackBtn.Name = "BackBtn";
             this.BackBtn.Size = new System.Drawing.Size(97, 34);
             this.BackBtn.TabIndex = 5;
@@ -119,6 +119,7 @@
             // 
             // recoveryFormBackground2
             // 
+            this.recoveryFormBackground2.BackColor = System.Drawing.Color.White;
             this.recoveryFormBackground2.Image = global::ActivityNumber1.Properties.Resources.TUBA_ForgotPass;
             this.recoveryFormBackground2.Location = new System.Drawing.Point(0, 313);
             this.recoveryFormBackground2.Margin = new System.Windows.Forms.Padding(2);
@@ -153,7 +154,7 @@
             this.Controls.Add(this.usernameTextBoxRF);
             this.Controls.Add(this.recoveryFormBackground1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximumSize = new System.Drawing.Size(332, 403);
             this.MinimumSize = new System.Drawing.Size(332, 403);
             this.Name = "RecoveryForms";

@@ -106,21 +106,12 @@ namespace ActivityNumber1
             passwordtextBox.Clear();
             newpasstextBox.Clear();
         }
-        private void newpasstextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void ResetForms_Load(object sender, EventArgs e)
         {
             this.TopMost = true;
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            string url = "https://nordpass.com/most-common-passwords-list/"; 
-            System.Diagnostics.Process.Start(url);
-        }
 
         private void showBtn_Click(object sender, EventArgs e)
         {
@@ -162,6 +153,28 @@ namespace ActivityNumber1
                 newpasstextBox.PasswordChar = '*';
             }
         }
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string url = "https://nordpass.com/most-common-passwords-list/"; 
+            System.Diagnostics.Process.Start(url);
+        }
 
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            string url = "https://haveibeenpwned.com/";
+            System.Diagnostics.Process.Start(url);
+        }
+
+        private void BackBtn_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            //Tuba
+            passwordtextBox.Clear();
+            newpasstextBox.Clear();
+        }
+        private void newpasstextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

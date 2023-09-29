@@ -117,4 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="textBox2.Text" xml:space="preserve">
+    <value>In order to protect your account, password must: 
+   -  Be at least 8 characters long
+   - Match in both fields
+   - Is not part of this 
+   - Is not part of this                            breach 
+     database</value>
+  </data>
 </root>
