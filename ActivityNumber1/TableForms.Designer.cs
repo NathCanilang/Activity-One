@@ -42,9 +42,10 @@
             // approvalBtn
             // 
             this.approvalBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.approvalBtn.Location = new System.Drawing.Point(796, 48);
+            this.approvalBtn.Location = new System.Drawing.Point(597, 39);
+            this.approvalBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.approvalBtn.Name = "approvalBtn";
-            this.approvalBtn.Size = new System.Drawing.Size(148, 48);
+            this.approvalBtn.Size = new System.Drawing.Size(111, 39);
             this.approvalBtn.TabIndex = 1;
             this.approvalBtn.Text = "Approve";
             this.approvalBtn.UseVisualStyleBackColor = true;
@@ -53,9 +54,10 @@
             // removeBtn
             // 
             this.removeBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.removeBtn.Location = new System.Drawing.Point(796, 154);
+            this.removeBtn.Location = new System.Drawing.Point(597, 125);
+            this.removeBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.removeBtn.Name = "removeBtn";
-            this.removeBtn.Size = new System.Drawing.Size(148, 48);
+            this.removeBtn.Size = new System.Drawing.Size(111, 39);
             this.removeBtn.TabIndex = 2;
             this.removeBtn.Text = "Reject";
             this.removeBtn.UseVisualStyleBackColor = true;
@@ -64,9 +66,10 @@
             // backBtn
             // 
             this.backBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.backBtn.Location = new System.Drawing.Point(796, 370);
+            this.backBtn.Location = new System.Drawing.Point(597, 301);
+            this.backBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.backBtn.Name = "backBtn";
-            this.backBtn.Size = new System.Drawing.Size(148, 48);
+            this.backBtn.Size = new System.Drawing.Size(111, 39);
             this.backBtn.TabIndex = 3;
             this.backBtn.Text = "Back";
             this.backBtn.UseVisualStyleBackColor = true;
@@ -76,8 +79,9 @@
             // 
             this.tableFormsBackground.Image = global::ActivityNumber1.Properties.Resources.TUBA_OuterSpace;
             this.tableFormsBackground.Location = new System.Drawing.Point(0, -2);
+            this.tableFormsBackground.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tableFormsBackground.Name = "tableFormsBackground";
-            this.tableFormsBackground.Size = new System.Drawing.Size(1005, 467);
+            this.tableFormsBackground.Size = new System.Drawing.Size(754, 379);
             this.tableFormsBackground.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.tableFormsBackground.TabIndex = 6;
             this.tableFormsBackground.TabStop = false;
@@ -87,20 +91,23 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(39, 48);
+            this.dataGridView1.Location = new System.Drawing.Point(29, 39);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(723, 370);
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(542, 301);
             this.dataGridView1.TabIndex = 7;
             // 
             // refreshBtn
             // 
             this.refreshBtn.Font = new System.Drawing.Font("Simple Handmade", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshBtn.Location = new System.Drawing.Point(796, 259);
+            this.refreshBtn.Location = new System.Drawing.Point(597, 210);
+            this.refreshBtn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.refreshBtn.Name = "refreshBtn";
-            this.refreshBtn.Size = new System.Drawing.Size(148, 48);
+            this.refreshBtn.Size = new System.Drawing.Size(111, 39);
             this.refreshBtn.TabIndex = 8;
             this.refreshBtn.Text = "Refresh";
             this.refreshBtn.UseVisualStyleBackColor = true;
@@ -108,9 +115,9 @@
             // 
             // TableForms
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1003, 463);
+            this.ClientSize = new System.Drawing.Size(754, 383);
             this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.backBtn);
@@ -118,8 +125,9 @@
             this.Controls.Add(this.approvalBtn);
             this.Controls.Add(this.tableFormsBackground);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximumSize = new System.Drawing.Size(1021, 510);
-            this.MinimumSize = new System.Drawing.Size(1021, 510);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.MaximumSize = new System.Drawing.Size(770, 422);
+            this.MinimumSize = new System.Drawing.Size(770, 422);
             this.Name = "TableForms";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Admin Account Control";

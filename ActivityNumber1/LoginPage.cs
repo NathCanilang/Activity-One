@@ -125,8 +125,6 @@ namespace ActivityNumber1
                                 loginAttempts = 0;
 
                                 currentAttempts = 3;
-
-                                textboxCleaner();
                             }
                         }
                     }
@@ -134,8 +132,9 @@ namespace ActivityNumber1
                     {
                         MessageBox.Show($"Invalid Username", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         errorAttempts();
-                        textboxCleaner();
+                        
                     }
+                    textboxCleaner();
                 }
 
                 catch (Exception b)
@@ -221,6 +220,7 @@ namespace ActivityNumber1
             passwordTextBox.Clear();
             usernameComboBox.ResetText();
             rememberCheckBox.CheckState = CheckState.Unchecked;
-        }
+        }   
+        //
     }
 }
