@@ -18,6 +18,7 @@ namespace ActivityNumber1
 
             string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
             conn = new MySqlConnection(mysqlcon);
+
             genderComboBox.Items.AddRange(genders);
             genderComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
 

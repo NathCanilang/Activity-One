@@ -76,6 +76,10 @@ namespace ActivityNumber1
                     }
                 }
             }
+            else
+            {
+                DialogResult choices = MessageBox.Show("No account selected?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
         }
 
         private void removeBtn_Click(object sender, EventArgs e)
@@ -86,33 +90,38 @@ namespace ActivityNumber1
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
 
-            DataGridViewRow selectedRow = dataGridView1.SelectedRows[0];
-            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
-            string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
-            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
-
-            DialogResult choices = MessageBox.Show("Are you sure you want to delete this account?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (choices == DialogResult.Yes)
+            if (dataGridView1.SelectedRows.Count == 0)
             {
-                try
-                {
-                    conn.Open();
-                    cmdDataBase.ExecuteNonQuery();
-                    refreshTable();
-                    MessageBox.Show("Account deleted", "Admin Control", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                DialogResult choices = MessageBox.Show("Activate selected accounts?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                catch (Exception b)
+                if(choices == DialogResult.Yes)
                 {
-                    MessageBox.Show(b.Message);
-                }
-
-                finally
-                {
-                    conn.Close();
+                    try
+                    {
+                        conn.Open();
+                        foreach(DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                        {
+                            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+                            string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
+                            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+                            cmdDataBase.ExecuteNonQuery();
+                        }
+                        MessageBox.Show("Selected accounts deleted!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    } 
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message );
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
                 }
             }
-
+            else
+            {
+                DialogResult choices = MessageBox.Show("No account selected?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
         }
 
         private void refreshBtn_Click(object sender, EventArgs e)
