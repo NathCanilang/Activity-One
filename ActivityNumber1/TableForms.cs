@@ -9,7 +9,6 @@ namespace ActivityNumber1
     {
         public static TableForms TableFormsInstance;
         private MySqlConnection conn;
-        
 
         public TableForms()
         {
@@ -63,7 +62,6 @@ namespace ActivityNumber1
                             cmdDataBase.ExecuteNonQuery();
                             selectedRow.Cells["Status"].Value = "ACTIVATED";
                         }
-
                         MessageBox.Show("Selected accounts updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
@@ -84,15 +82,9 @@ namespace ActivityNumber1
 
         private void removeBtn_Click(object sender, EventArgs e)
         {
-            string query = "SELECT * FROM mbuserinfo";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            if (dataGridView1.SelectedRows.Count == 0)
+            if (dataGridView1.SelectedRows.Count > 0)
             {
-                DialogResult choices = MessageBox.Show("Activate selected accounts?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult choices = MessageBox.Show("Delete selected account/s?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if(choices == DialogResult.Yes)
                 {
@@ -105,6 +97,7 @@ namespace ActivityNumber1
                             string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
                             MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
                             cmdDataBase.ExecuteNonQuery();
+                            refreshTable();
                         }
                         MessageBox.Show("Selected accounts deleted!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     } 

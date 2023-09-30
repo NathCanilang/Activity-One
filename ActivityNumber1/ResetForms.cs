@@ -39,12 +39,10 @@ namespace ActivityNumber1
             }
             else
             {
-                // Retrieve the username and email from RecoveryForms
                 string enteredUsername = RecoveryForms.RecoveryFormsInstance.usernameTextBoxRF.Text;
                 string enteredEmail = RecoveryForms.RecoveryFormsInstance.emailTextBoxRF.Text;
                 string newPassword = passwordtextBox.Text;
 
-                // Establish a MySQL connection
                 string connectionString = "server=localhost;user=root;database=moonbasedatabase;password=";
 
                 using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -53,23 +51,19 @@ namespace ActivityNumber1
                     {
                         connection.Open();
 
-                        // Create a MySQL query to select the specific row in the database
                         string updatePasswordQuery = "UPDATE mbuserinfo SET HashedPassword = @HashedPassword, FixedSaltedPassword = @FixedSaltedPassword, RandomString = @RandomString, RandomSaltedPassword = @RandomSaltedPassword WHERE Username = @Username AND Email = @Email";
 
                         MySqlCommand cmd = new MySqlCommand(updatePasswordQuery, connection);
-                        //Hash
                         string hashedNewPassword = PasswordEncrypter.hashPassword(newPassword);
                         cmd.Parameters.AddWithValue("@HashedPassword", hashedNewPassword);
 
-                        //Fixed Salt
                         string fixedSaltedPassword = PasswordEncrypter.fixedSaltPassword(newPassword, fixedSalt);
                         cmd.Parameters.AddWithValue("@FixedSaltedPassword", fixedSaltedPassword);
 
-                        //Random String
+
                         string randomAsin = randomSalt;
                         cmd.Parameters.AddWithValue("@RandomString", randomAsin);
 
-                        //Random Salt
                         string randomSaltedPassword = PasswordEncrypter.randomSaltPassword(newPassword, randomSalt);
                         cmd.Parameters.AddWithValue("@RandomSaltedPassword", randomSaltedPassword);
 
@@ -80,7 +74,6 @@ namespace ActivityNumber1
 
                         if (rowsAffected > 0)
                         {
-                            // Show a confirmation message
                             DialogResult confirmationResult = MessageBox.Show("Your password has been successfully reset.", "PASSWORD RESET", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                             if (confirmationResult == DialogResult.OK)
@@ -168,7 +161,6 @@ namespace ActivityNumber1
         private void BackBtn_Click(object sender, EventArgs e)
         {
             this.Hide();
-            //Tuba
             passwordtextBox.Clear();
             newpasstextBox.Clear();
         }
