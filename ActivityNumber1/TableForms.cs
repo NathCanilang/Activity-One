@@ -41,7 +41,7 @@ namespace ActivityNumber1
         {
             this.Hide();
         }
-        
+
         private void approvalBtn_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
@@ -86,12 +86,12 @@ namespace ActivityNumber1
             {
                 DialogResult choices = MessageBox.Show("Delete selected account/s?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                if(choices == DialogResult.Yes)
+                if (choices == DialogResult.Yes)
                 {
                     try
                     {
                         conn.Open();
-                        foreach(DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                        foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
                         {
                             string accountUsername = selectedRow.Cells["Username"].Value.ToString();
                             string updateQuery = $"DELETE FROM mbuserinfo WHERE Username = '{accountUsername}'";
@@ -100,10 +100,10 @@ namespace ActivityNumber1
                             refreshTable();
                         }
                         MessageBox.Show("Selected accounts deleted!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    } 
-                    catch(Exception ex)
+                    }
+                    catch (Exception ex)
                     {
-                        MessageBox.Show("Error: " + ex.Message );
+                        MessageBox.Show("Error: " + ex.Message);
                     }
                     finally
                     {
@@ -117,9 +117,42 @@ namespace ActivityNumber1
             }
         }
 
-        private void refreshBtn_Click(object sender, EventArgs e)
+        private void deactivateBtn_Click(object sender, EventArgs e)
         {
-            refreshTable();
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                DialogResult choices = MessageBox.Show("Deactivate selected accounts?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (choices == DialogResult.Yes)
+                {
+                    try
+                    {
+                        conn.Open();
+
+                        foreach (DataGridViewRow selectedRow in dataGridView1.SelectedRows)
+                        {
+                            string accountUsername = selectedRow.Cells["Username"].Value.ToString();
+                            string updateQuery = $"UPDATE mbuserinfo SET Status = 'DEACTIVATED' WHERE Username = '{accountUsername}'";
+                            MySqlCommand cmdDataBase = new MySqlCommand(updateQuery, conn);
+                            cmdDataBase.ExecuteNonQuery();
+                            selectedRow.Cells["Status"].Value = "DEACTIVATED";
+                        }
+                        MessageBox.Show("Selected accounts updated!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                    finally
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+            else
+            {
+                DialogResult choices = MessageBox.Show("No account selected?", "Notice", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            }
         }
 
         private void refreshTable()

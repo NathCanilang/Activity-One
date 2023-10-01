@@ -12,11 +12,11 @@ namespace ActivityNumber1
         CreateForms createforms = new CreateForms();
         TableForms tableforms = new TableForms();
         RecoveryForms recoveryForms = new RecoveryForms();
-        WelcomeForms welcomeForms = new WelcomeForms(); 
+        WelcomeForms welcomeForms = new WelcomeForms();
 
         public int loginAttempts = 0;
         public int currentAttempts = 3;
- 
+
         private string adminUsername = "Admin";
         private string adminPassword = "admin123";
 
@@ -64,87 +64,94 @@ namespace ActivityNumber1
             string enteredUsername = usernameComboBox.Text;
             string enteredPassword = passwordTextBox.Text;
 
-            if (enteredUsername == adminUsername && enteredPassword == adminPassword)
-            {
-                loginAttempts = 0;
-                currentAttempts = 3;
-
-                MessageBox.Show("Hi Admin, Welcome!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.WindowState = FormWindowState.Minimized;
-                tableforms.ShowDialog();
-                this.WindowState = FormWindowState.Normal;
-                rememberAccount();
-
-                textboxCleaner();
-                rememberCheckBox.CheckState = CheckState.Unchecked;
-
-                return;
-            }
-            else if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
+            if (string.IsNullOrWhiteSpace(enteredUsername) || string.IsNullOrWhiteSpace(enteredPassword))
             {
                 MessageBox.Show("Please fill in all required fields.", " Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 rememberCheckBox.CheckState = CheckState.Unchecked;
                 errorAttempts();
                 return;
             }
-            else
+
+            if (enteredUsername == adminUsername)
             {
-                try
+                if (enteredPassword == adminPassword)
                 {
-                    conn.Open();
-                    myReader = cmdDataBase.ExecuteReader();
-                    if (myReader.Read())
+                    loginAttempts = 0;
+                    currentAttempts = 3;
+
+                    MessageBox.Show("Hi Admin, Welcome!", "Login Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.WindowState = FormWindowState.Minimized;
+                    tableforms.ShowDialog();
+                    this.WindowState = FormWindowState.Normal;
+                    rememberAccount();
+
+                    textboxCleaner();
+                    rememberCheckBox.CheckState = CheckState.Unchecked;
+
+                    return;
+                }
+                else
+                {
+                    MessageBox.Show("Invalid admin password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+            }
+
+            try
+            {
+                conn.Open();
+                myReader = cmdDataBase.ExecuteReader();
+                if (myReader.Read())
+                {
+                    string databasePassword = myReader["HashedPassword"].ToString();
+                    string accountStatus = myReader["Status"].ToString();
+
+                    if (accountStatus == "ACTIVATED")
                     {
-                        string databasePassword = myReader["HashedPassword"].ToString();
-                        string accountStatus = myReader["Status"].ToString();
+                        accountActive = true;
+                    }
 
-                        if(accountStatus == "ACTIVATED")
-                        {
-                            accountActive = true;
-                        }
-
-                        if (!accountActive)
-                        {
-                            MessageBox.Show("Wait for the admin to approve your account!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                        else
-                        {
-                            if (passwordInput != databasePassword)
-                            {
-                                MessageBox.Show($"Invalid Password", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                errorAttempts();
-                            }
-                            else
-                            {
-                                MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                rememberAccount();
-                                this.WindowState = FormWindowState.Minimized;
-                                welcomeForms.ShowDialog();
-                                this.WindowState = FormWindowState.Normal;
-                                loginAttempts = 0;
-
-                                currentAttempts = 3;
-                            }
-                        }
+                    if (!accountActive)
+                    {
+                        MessageBox.Show("Wait for the admin to approve your account!", "Notice", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
-                        MessageBox.Show($"Invalid Username", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        errorAttempts();
-                        
+                        if (passwordInput != databasePassword)
+                        {
+                            MessageBox.Show($"Invalid Password", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            errorAttempts();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Login successful!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            rememberAccount();
+                            this.WindowState = FormWindowState.Minimized;
+                            welcomeForms.ShowDialog();
+                            this.WindowState = FormWindowState.Normal;
+                            loginAttempts = 0;
+
+                            currentAttempts = 3;
+                        }
                     }
-                    textboxCleaner();
                 }
-
-                catch (Exception b)
+                else
                 {
-                    MessageBox.Show(b.Message);
-                }
+                    MessageBox.Show($"Invalid Username", "Try Again", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    errorAttempts();
 
-                finally
-                {
-                    conn.Close();
                 }
+                textboxCleaner();
+            }
+
+            catch (Exception b)
+            {
+                MessageBox.Show(b.Message);
+            }
+
+            finally
+            {
+                conn.Close();
             }
         }
         public void errorAttempts()
@@ -219,6 +226,6 @@ namespace ActivityNumber1
             passwordTextBox.Clear();
             usernameComboBox.ResetText();
             rememberCheckBox.CheckState = CheckState.Unchecked;
-        }   
+        }
     }
 }
