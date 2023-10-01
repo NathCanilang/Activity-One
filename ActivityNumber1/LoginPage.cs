@@ -35,7 +35,6 @@ namespace ActivityNumber1
 
             string mysqlcon = "server=localhost;user=root;database=moonbasedatabase;password=";
             conn = new MySqlConnection(mysqlcon);
-
         }
 
         private void createAccountLbl_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -221,6 +220,5 @@ namespace ActivityNumber1
             usernameComboBox.ResetText();
             rememberCheckBox.CheckState = CheckState.Unchecked;
         }   
-        //
     }
 }
